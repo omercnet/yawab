@@ -1,0 +1,198 @@
+/* ── Download Section ────────────────────────────────────────────── */
+.download {
+  padding-block: var(--sp-32);
+  border-top: 1px solid var(--c-border);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 230, 118, 0.025) 50%,
+    transparent 100%
+  );
+}
+
+.download-inner {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: clamp(var(--sp-6), 5vw, var(--sp-16));
+}
+
+/* ── Hero block ───────────────────────────────────────────────────── */
+.download-hero {
+  text-align: center;
+  margin-bottom: var(--sp-20);
+}
+
+.download-heading {
+  font-family: "Unbounded", sans-serif;
+  font-size: var(--fs-4xl);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--c-text-1);
+  margin-bottom: var(--sp-6);
+}
+
+.download-version {
+  font-family: "Unbounded", monospace;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--c-accent);
+  margin-bottom: var(--sp-8);
+}
+
+/* ── Primary CTA ──────────────────────────────────────────────────── */
+.download-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-12);
+  background: var(--c-accent);
+  color: var(--c-void);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  border-radius: var(--r-full);
+  text-decoration: none;
+  transition:
+    transform var(--dur-fast) var(--ease-out-expo),
+    box-shadow var(--dur-fast);
+  white-space: nowrap;
+}
+
+.download-cta:hover {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: var(--shadow-accent);
+}
+
+.download-cta:active {
+  transform: scale(0.97);
+}
+
+.download-tagline {
+  margin-top: var(--sp-5);
+  font-size: var(--fs-sm);
+  color: var(--c-text-3);
+  letter-spacing: 0.01em;
+}
+
+/* ── Platforms ────────────────────────────────────────────────────── */
+.download-platforms {
+  border-top: 1px solid var(--c-border);
+  padding-top: var(--sp-12);
+}
+
+.download-platforms-label {
+  font-family: "Unbounded", sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  margin-bottom: var(--sp-8);
+  text-align: center;
+}
+
+/* ── Download grid ────────────────────────────────────────────────── */
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-8);
+}
+
+.download-group-name {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  margin-bottom: var(--sp-3);
+}
+
+.download-group-slots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* ── Individual slot ──────────────────────────────────────────────── */
+.dl-slot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--c-elevated);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  text-decoration: none;
+  transition:
+    border-color var(--dur-fast),
+    background var(--dur-fast),
+    transform var(--dur-fast);
+}
+
+.dl-slot:hover {
+  border-color: var(--c-accent);
+  background: var(--c-accent-subtle);
+  transform: translateX(3px);
+}
+
+.dl-slot-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.dl-slot-label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dl-slot-ext {
+  font-size: var(--fs-xs);
+  color: var(--c-text-3);
+  font-family: "Unbounded", monospace;
+  letter-spacing: 0.06em;
+}
+
+.dl-slot-arrow {
+  flex-shrink: 0;
+  color: var(--c-text-3);
+  font-size: var(--fs-sm);
+  transition:
+    color var(--dur-fast),
+    transform var(--dur-fast);
+}
+
+.dl-slot:hover .dl-slot-arrow {
+  color: var(--c-accent);
+  transform: translateX(2px);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .download-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .download-heading {
+    font-size: var(--fs-3xl);
+  }
+
+  .download-cta {
+    padding: var(--sp-4) var(--sp-8);
+    font-size: var(--fs-base);
+    width: 100%;
+    justify-content: center;
+  }
+
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+}
