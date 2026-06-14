@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
   DEFAULT_LANGUAGE,
-  SUPPORTED_LANGUAGES,
   directionOf,
   isSupportedLanguage,
   resolveLanguage,
-  resolvePreference
+  resolvePreference,
+  SUPPORTED_LANGUAGES
 } from './locales'
 
 describe('isSupportedLanguage', () => {

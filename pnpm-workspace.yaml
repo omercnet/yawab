@@ -1,0 +1,22 @@
+# pnpm 11 reads non-auth settings from here (NOT .npmrc).
+
+# electron-builder needs a flat node_modules (symlinks break app packaging),
+# so use the hoisted linker.
+nodeLinker: hoisted
+
+# Baileys depends on `libsignal` (whiskeysockets/libsignal-node), which is only
+# distributed as a git dependency. pnpm 11 blocks exotic (git) transitive deps
+# by default; allow them so the install can resolve libsignal.
+blockExoticSubdeps: false
+
+# Explicitly approve dependency build scripts (pnpm 11 requires opt-in).
+allowBuilds:
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+  '@biomejs/biome': true
+  '@parcel/watcher': true
+  app-builder-bin: true
+  dmg-license: true
+  '@whiskeysockets/baileys': true
+  protobufjs: true

@@ -1,4 +1,5 @@
 import { type LanguagePreference, SUPPORTED_LANGUAGES } from '@shared/locales'
+import type { JSX } from 'react'
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 

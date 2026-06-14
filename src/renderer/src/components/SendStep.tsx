@@ -1,4 +1,5 @@
 import type { Contact, SendOptions, SendProgress, SendResult } from '@shared/types'
+import type { JSX } from 'react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

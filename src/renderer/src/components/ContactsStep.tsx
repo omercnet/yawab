@@ -1,4 +1,5 @@
 import type { Contact, ParsedContacts } from '@shared/types'
+import type { JSX } from 'react'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

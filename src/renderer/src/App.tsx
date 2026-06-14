@@ -1,5 +1,6 @@
 import type { Contact } from '@shared/types'
 import { DEFAULT_SEND_OPTIONS } from '@shared/types'
+import type { JSX } from 'react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ComposeStep } from './components/ComposeStep'
