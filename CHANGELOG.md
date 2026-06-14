@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/omercnet/yawab/compare/v1.0.0...v1.0.1) (2026-06-14)
+
+
+### Bug Fixes
+
+* bundle app deps to eliminate electron-builder pnpm collector ([#8](https://github.com/omercnet/yawab/issues/8)) ([f4d6e3c](https://github.com/omercnet/yawab/commit/f4d6e3c5881170e73bb859c8f5826691f7a134ea))
+
 ## 1.0.0 (2026-06-14)
 
 
