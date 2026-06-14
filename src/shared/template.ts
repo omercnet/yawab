@@ -1,20 +1,35 @@
+import type { MissingTokenStrategy } from './settings'
 import type { Contact } from './types'
+
+export interface RenderOptions {
+  /** How to render a `{{token}}` that has no value (default: 'keep'). */
+  missingToken?: MissingTokenStrategy
+  /** When set, appended on its own line(s) after the body (e.g. an opt-out note). */
+  footer?: string
+}
 
 /**
  * Render a message template against a contact.
  *
  * Tokens use the `{{token}}` syntax and are matched case-insensitively against
  * the contact's `name`, `phone`, and any extra CSV `fields`. Unknown tokens are
- * left untouched so the user can spot mistakes rather than silently sending
- * blanks.
+ * either left untouched ('keep', the default) so the user can spot mistakes, or
+ * rendered as blank ('blank'). An optional `footer` is appended after the body.
  */
-export function renderTemplate(template: string, contact: Contact): string {
+export function renderTemplate(
+  template: string,
+  contact: Contact,
+  options: RenderOptions = {}
+): string {
   const lookup = buildLookup(contact)
-  return template.replace(/\{\{\s*([\w.-]+)\s*\}\}/g, (match, rawToken) => {
+  const body = template.replace(/\{\{\s*([\w.-]+)\s*\}\}/g, (match, rawToken) => {
     const key = String(rawToken).toLowerCase()
     const value = lookup.get(key)
-    return value === undefined ? match : value
+    if (value !== undefined) return value
+    return options.missingToken === 'blank' ? '' : match
   })
+  const footer = options.footer?.trim()
+  return footer ? `${body}\n\n${footer}` : body
 }
 
 function buildLookup(contact: Contact): Map<string, string> {

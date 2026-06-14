@@ -3,6 +3,7 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { parseContactsCsv } from '@shared/csv'
 import { IpcChannels, IpcEvents, type StartSendPayload } from '@shared/ipc'
 import { type LanguagePreference, resolvePreference } from '@shared/locales'
+import type { SettingsPatch } from '@shared/settings'
 import { renderTemplate } from '@shared/template'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { readSettings, writeSettings } from './settings'
@@ -63,18 +64,31 @@ function getService(): WhatsAppController {
 }
 
 function registerIpc(): void {
-  ipcMain.handle(IpcChannels.connect, () => getService().connect())
+  ipcMain.handle(IpcChannels.connect, () => {
+    const service = getService()
+    service.configure(readSettings().connection)
+    return service.connect()
+  })
   ipcMain.handle(IpcChannels.logout, () => getService().logout())
   ipcMain.handle(IpcChannels.getStatus, () => getService().getStatus())
   ipcMain.handle(IpcChannels.cancelSend, () => getService().cancel())
 
-  ipcMain.handle(IpcChannels.parseCsv, (_event, content: string) =>
-    parseContactsCsv(content)
-  )
+  ipcMain.handle(IpcChannels.parseCsv, (_event, content: string) => {
+    const { csv } = readSettings()
+    return parseContactsCsv(content, {
+      defaultCountryCode: csv.defaultCountryCode || undefined
+    })
+  })
 
   ipcMain.handle(IpcChannels.startSend, async (_event, payload: StartSendPayload) => {
     const { contacts, template, options } = payload
-    await getService().sendBulk(contacts, (c) => renderTemplate(template, c), options)
+    const { message } = readSettings()
+    const footer = message.optOutFooterEnabled ? message.optOutFooterText : undefined
+    await getService().sendBulk(
+      contacts,
+      (c) => renderTemplate(template, c, { missingToken: message.missingToken, footer }),
+      options
+    )
   })
 
   ipcMain.handle(IpcChannels.getLanguage, () => {
@@ -91,6 +105,24 @@ function registerIpc(): void {
     const { language } = writeSettings({ language: preference })
     return resolvePreference(language, app.getLocale())
   })
+
+  ipcMain.handle(IpcChannels.getSettings, () => readSettings())
+
+  ipcMain.handle(IpcChannels.updateSettings, (_event, patch: SettingsPatch) => {
+    const next = writeSettings(patch)
+    whatsapp?.configure(next.connection)
+    return next
+  })
+
+  ipcMain.handle(IpcChannels.openDataFolder, async () => {
+    await shell.openPath(app.getPath('userData'))
+  })
+
+  ipcMain.handle(IpcChannels.getAppInfo, () => ({
+    version: app.getVersion(),
+    dataPath: app.getPath('userData'),
+    platform: process.platform
+  }))
 }
 
 app.whenReady().then(() => {
@@ -120,6 +152,7 @@ app.on('window-all-closed', () => {
  */
 async function checkForUpdates(): Promise<void> {
   if (is.dev || process.env.YAWAB_FAKE_WA) return
+  if (!readSettings().autoUpdate) return
   try {
     const { autoUpdater } = await import('electron-updater')
     await autoUpdater.checkForUpdatesAndNotify()

@@ -72,5 +72,97 @@
   "language": {
     "label": "Language",
     "system": "System default"
+  },
+  "settings": {
+    "open": "Settings",
+    "title": "Settings",
+    "done": "Done",
+    "cancel": "Cancel",
+    "unit": {
+      "seconds": "sec",
+      "messages": "messages",
+      "failures": "failures"
+    },
+    "pacing": {
+      "title": "Sending & pacing",
+      "description": "Randomized delays make sending look human and protect your number.",
+      "presets": "Pacing presets",
+      "preset": {
+        "cautious": "Cautious",
+        "balanced": "Balanced",
+        "fast": "Fast"
+      },
+      "minLabel": "Minimum delay",
+      "maxLabel": "Maximum delay",
+      "risk": {
+        "safe": "Safe pace — low ban risk.",
+        "caution": "Brisk pace — some ban risk. Consider slowing down.",
+        "danger": "Very fast — high ban risk. Slow down to protect your number."
+      },
+      "floorHint": "For safety, the minimum delay can't be set below 1 second.",
+      "capLabel": "Per-run limit",
+      "capHint": "Stop after this many messages in one run. 0 means no limit.",
+      "batchSizeLabel": "Batch size",
+      "batchPauseLabel": "Cool-down between batches",
+      "stopFailuresLabel": "Stop after failures",
+      "stopFailuresHint": "Abort if this many messages fail in a row (likely a block). 0 disables it.",
+      "randomizeLabel": "Randomize order",
+      "randomizeHint": "Shuffle recipients so sends look less automated.",
+      "typingLabel": "Simulate typing",
+      "typingHint": "Show a typing indicator before each message."
+    },
+    "message": {
+      "title": "Message defaults",
+      "description": "How messages are rendered before sending.",
+      "missingTokenLabel": "Missing tokens",
+      "missingTokenHint": "What to do when a placeholder has no value for a contact.",
+      "missingToken": {
+        "keep": "Keep the token text",
+        "blank": "Replace with blank"
+      },
+      "footerLabel": "Opt-out footer",
+      "footerHint": "Append an opt-out line to every message.",
+      "footerTextLabel": "Footer text",
+      "footerPlaceholder": "Reply STOP to unsubscribe"
+    },
+    "csv": {
+      "title": "CSV import",
+      "description": "Defaults applied when importing contacts.",
+      "countryCodeLabel": "Default country code",
+      "countryCodeHint": "Prepended to local numbers that have no country code."
+    },
+    "account": {
+      "title": "Account & connection",
+      "description": "Manage your linked WhatsApp session.",
+      "appearOnlineLabel": "Appear online",
+      "appearOnlineHint": "Mark your session online while the app is running.",
+      "autoReconnectLabel": "Auto-reconnect",
+      "autoReconnectHint": "Reconnect automatically after a dropped connection.",
+      "unlinkLabel": "Unlink device",
+      "unlinkHint": "Log out and forget the stored WhatsApp session.",
+      "unlink": "Unlink",
+      "unlinkConfirm": "Unlink now"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Theme, motion, and language.",
+      "themeLabel": "Theme",
+      "systemTheme": "System",
+      "reduceMotionLabel": "Reduce motion",
+      "reduceMotionHint": "Disable non-essential animations.",
+      "languageLabel": "Language"
+    },
+    "data": {
+      "title": "Updates & data",
+      "description": "App updates and where your data lives.",
+      "autoUpdateLabel": "Automatic updates",
+      "autoUpdateHint": "Check for and install updates on launch.",
+      "folderLabel": "Data folder",
+      "openFolder": "Open",
+      "resetLabel": "Reset settings",
+      "resetHint": "Restore all settings to their defaults.",
+      "reset": "Reset",
+      "version": "Version {{version}} · {{platform}}"
+    }
   }
 }
