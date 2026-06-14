@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/omercnet/yawab/compare/v1.0.1...v1.0.2) (2026-06-14)
+
+
+### Bug Fixes
+
+* macOS release signing (empty CSC_LINK) + esbuild advisory ([#10](https://github.com/omercnet/yawab/issues/10)) ([394f047](https://github.com/omercnet/yawab/commit/394f047ad5a1ea46f871ee01e18c2518d359f97f))
+
 ## [1.0.1](https://github.com/omercnet/yawab/compare/v1.0.0...v1.0.1) (2026-06-14)
 
 
