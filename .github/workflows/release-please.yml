@@ -16,7 +16,7 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
         with:
           # Prefer a PAT / GitHub App token (RELEASE_PLEASE_TOKEN) so the release
@@ -36,21 +36,23 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            build: npm run build:mac
+            build: pnpm run build:mac
           - os: windows-latest
-            build: npm run build:win
+            build: pnpm run build:win
           - os: ubuntu-latest
-            build: npm run build:linux
+            build: pnpm run build:linux
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build & publish to the GitHub release
         run: ${{ matrix.build }} --publish always

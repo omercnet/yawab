@@ -3,10 +3,10 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  type ElectronApplication,
-  type Page,
   _electron,
-  test as base
+  test as base,
+  type ElectronApplication,
+  type Page
 } from '@playwright/test'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))

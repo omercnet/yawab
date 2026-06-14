@@ -4,7 +4,7 @@ import {
   type RendererApi,
   type StartSendPayload
 } from '@shared/ipc'
-import { type IpcRendererEvent, contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, type IpcRendererEvent, ipcRenderer } from 'electron'
 
 function subscribe<T>(channel: string, cb: (payload: T) => void): () => void {
   const listener = (_event: IpcRendererEvent, payload: T): void => cb(payload)

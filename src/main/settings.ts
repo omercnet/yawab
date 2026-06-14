@@ -1,6 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { type LanguagePreference, isSupportedLanguage } from '@shared/locales'
+import { isSupportedLanguage, type LanguagePreference } from '@shared/locales'
 import { app } from 'electron'
 
 export interface Settings {

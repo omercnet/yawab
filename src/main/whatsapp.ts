@@ -9,9 +9,9 @@ import type {
   SendResult
 } from '@shared/types'
 import makeWASocket, {
-  useMultiFileAuthState,
-  fetchLatestBaileysVersion,
   DisconnectReason,
+  fetchLatestBaileysVersion,
+  useMultiFileAuthState,
   type WASocket
 } from '@whiskeysockets/baileys'
 import pino from 'pino'

@@ -1,5 +1,6 @@
 import { extractTokens, renderTemplate } from '@shared/template'
 import type { Contact } from '@shared/types'
+import type { JSX } from 'react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 

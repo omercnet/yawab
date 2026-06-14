@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE, type LanguageCode, directionOf } from '@shared/locales'
+import { DEFAULT_LANGUAGE, directionOf, type LanguageCode } from '@shared/locales'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import ar from './locales/ar.json'
