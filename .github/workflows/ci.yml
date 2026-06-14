@@ -33,7 +33,14 @@ jobs:
 
       - name: Validate pushed commit
         if: github.event_name == 'push'
-        run: npx commitlint --from "${{ github.event.before }}" --to "${{ github.sha }}" --verbose
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -n "$BEFORE" ] && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            npx commitlint --from "$BEFORE" --to "${{ github.sha }}" --verbose
+          else
+            echo "Previous commit ($BEFORE) is unavailable (new or force-pushed branch); linting HEAD only."
+            npx commitlint --last --verbose
+          fi
 
   quality:
     name: Lint, typecheck & test
