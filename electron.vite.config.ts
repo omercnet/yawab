@@ -1,31 +1,19 @@
-import { builtinModules, createRequire } from 'node:module'
+import { builtinModules } from 'node:module'
 import { resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'electron-vite'
 
-const require = createRequire(import.meta.url)
-const pkg = require('./package.json') as {
-  dependencies?: Record<string, string>
-}
-
-// Node built-ins + the electron runtime module must never be bundled (electron
-// provides them at runtime). Bundling the `electron` npm package pulls in its
-// install shim, whose default export is the binary *path string* — so
-// `import { app } from 'electron'` resolves to `undefined` and the app crashes
-// on launch. Externalize them explicitly.
-const nodeAndElectronExternals: (string | RegExp)[] = [
+// Only `electron` and Node built-ins stay external. `electron` is provided by
+// the runtime (bundling its npm package pulls in an install shim whose default
+// export is the binary path string, which crashes the app). EVERYTHING else is
+// bundled into the main/preload output, so the packaged app ships with zero
+// production dependencies. That removes electron-builder's pnpm node-modules
+// collector from the packaging path entirely — it was non-deterministically
+// failing on macOS with `⨯ <projectDir> not a file`.
+const externals: (string | RegExp)[] = [
   'electron',
   /^electron\/.+/,
   ...builtinModules.flatMap((m) => [m, `node:${m}`])
-]
-
-// Runtime dependencies are externalized in the main process and shipped in
-// node_modules by electron-builder (which only packages `dependencies`).
-const runtimeDeps = Object.keys(pkg.dependencies ?? {})
-const mainExternals: (string | RegExp)[] = [
-  ...nodeAndElectronExternals,
-  ...runtimeDeps,
-  ...runtimeDeps.map((dep) => new RegExp(`^${dep}/.+`))
 ]
 
 export default defineConfig({
@@ -37,7 +25,7 @@ export default defineConfig({
     },
     build: {
       rollupOptions: {
-        external: mainExternals,
+        external: externals,
         input: { index: resolve('src/main/index.ts') }
       }
     }
@@ -50,10 +38,7 @@ export default defineConfig({
     },
     build: {
       rollupOptions: {
-        // Preload runs in the (potentially sandboxed) renderer context, so it
-        // cannot load packages from node_modules — bundle dependencies and only
-        // keep electron + node built-ins external.
-        external: nodeAndElectronExternals,
+        external: externals,
         input: { index: resolve('src/preload/index.ts') },
         // main process loads `../preload/index.mjs`; electron-vite 5 would
         // otherwise emit `index.js` for an ESM project.

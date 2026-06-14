@@ -21,3 +21,7 @@ coverage
 playwright-report
 test-results
 .playwright
+
+# Agent/tooling state
+.omo
+.sisyphus

@@ -1,6 +1,9 @@
 appId: com.yawab.app
 productName: Yawab
 copyright: Copyright © 2026 Yawab
+# The app bundles all JS deps (zero production dependencies) and has no native
+# modules, so there is nothing for electron-builder to rebuild.
+npmRebuild: false
 directories:
   buildResources: build
   output: dist
