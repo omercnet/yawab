@@ -1,0 +1,75 @@
+{
+  "app": {
+    "subtitle": "Envío masivo por WhatsApp"
+  },
+  "status": {
+    "disconnected": "Desconectado",
+    "connecting": "Conectando",
+    "qr": "Escanea el QR",
+    "connected": "Conectado",
+    "logged-out": "Sesión cerrada"
+  },
+  "steps": {
+    "navLabel": "Pasos de configuración",
+    "connect": "Conectar",
+    "contacts": "Contactos",
+    "compose": "Redactar",
+    "send": "Enviar"
+  },
+  "connect": {
+    "title": "Conecta tu WhatsApp",
+    "instructions": "En tu teléfono, abre WhatsApp y ve a Ajustes → Dispositivos vinculados → Vincular un dispositivo y, a continuación, escanea el código QR de abajo.",
+    "ready": "Conectado y listo para enviar.",
+    "continue": "Continuar",
+    "logout": "Cerrar sesión",
+    "generating": "Generando código QR…",
+    "press": "Pulsa Conectar para generar un código de vinculación.",
+    "waiting": "Esperando el escaneo…",
+    "connect": "Conectar",
+    "qrAlt": "Código QR de vinculación de WhatsApp"
+  },
+  "contacts": {
+    "title": "Cargar contactos",
+    "description": "Elige un CSV con una columna de teléfono (y, opcionalmente, una de nombre). Las columnas adicionales se convierten en tokens del mensaje.",
+    "dropzone": "Suelta un CSV aquí o haz clic para explorar",
+    "readError": "No se pudo leer el archivo",
+    "valid": "{{count}} válidos",
+    "skipped": "{{count}} omitidos",
+    "thName": "Nombre",
+    "thPhone": "Teléfono",
+    "continue": "Continuar ({{count}})"
+  },
+  "compose": {
+    "title": "Redacta tu mensaje",
+    "help": "Usa tokens como {{example}} para personalizar cada mensaje.",
+    "placeholder": "Hola {{name}}, …",
+    "unknownTokens": "Tokens desconocidos: {{tokens}}",
+    "previewFor": "Vista previa para {{name}}",
+    "review": "Revisar y enviar"
+  },
+  "send": {
+    "title": "Enviar",
+    "summary": "Enviando a {{count}} contactos con un retraso aleatorio de {{min}}–{{max}} s entre mensajes.",
+    "sent": "{{count}} enviados",
+    "failed": "{{count}} fallidos",
+    "skipped": "{{count}} omitidos",
+    "sendingTo": "Enviando a {{name}}…",
+    "start": "Iniciar envío",
+    "again": "Enviar de nuevo",
+    "cancel": "Cancelar",
+    "results": "Resultados ({{count}})",
+    "thName": "Nombre",
+    "thPhone": "Teléfono",
+    "thStatus": "Estado",
+    "thError": "Error"
+  },
+  "result": {
+    "sent": "enviado",
+    "failed": "fallido",
+    "skipped": "omitido"
+  },
+  "language": {
+    "label": "Idioma",
+    "system": "Predeterminado del sistema"
+  }
+}

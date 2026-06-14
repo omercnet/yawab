@@ -1,0 +1,56 @@
+appId: com.yawn.app
+productName: Yawn
+copyright: Copyright © 2026 Yawn
+directories:
+  buildResources: build
+  output: dist
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{vitest.config.{js,ts},playwright.config.{js,ts}}'
+  - '!{biome.json,dev-app-update.yml,CHANGELOG.md,README.md,.editorconfig}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml,package-lock.json}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - '!{e2e,coverage,playwright-report,test-results}/*'
+asarUnpack:
+  - resources/**
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - arm64
+  artifactName: ${productName}-${version}-setup-${arch}.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+dmg:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+linux:
+  target:
+    - AppImage
+    - deb
+  maintainer: yawn
+  category: Utility
+  artifactName: ${productName}-${version}-${arch}.${ext}
+publish:
+  provider: github
+  owner: omercnet
+  repo: yawn
+electronDownload:
+  mirror: https://github.com/electron/electron/releases/download/

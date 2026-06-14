@@ -1,0 +1,92 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignore": [
+      "out",
+      "dist",
+      "coverage",
+      "node_modules",
+      "package-lock.json",
+      "playwright-report",
+      "test-results"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 90
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": { "all": true },
+      "complexity": {
+        "all": true,
+        "noVoid": "off",
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      "correctness": {
+        "all": true,
+        "useExhaustiveDependencies": "warn",
+        "noUndeclaredDependencies": "off",
+        "useImportExtensions": "off",
+        "noNodejsModules": "off"
+      },
+      "performance": { "all": true },
+      "security": { "all": true },
+      "suspicious": {
+        "all": true,
+        "noExplicitAny": "error",
+        "noReactSpecificProps": "off"
+      },
+      "style": {
+        "all": true,
+        "noDefaultExport": "off",
+        "noNonNullAssertion": "off",
+        "noImplicitBoolean": "off",
+        "noParameterProperties": "off",
+        "useBlockStatements": "off",
+        "useNamingConvention": "off",
+        "useSingleVarDeclarator": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["JSX"],
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "none"
+    }
+  },
+  "overrides": [
+    {
+      "include": ["src/main/**", "src/preload/**"],
+      "linter": {
+        "rules": {
+          "correctness": { "useHookAtTopLevel": "off" },
+          "suspicious": { "noConsole": "off" }
+        }
+      }
+    },
+    {
+      "include": ["**/*.test.ts", "**/*.spec.ts", "e2e/**"],
+      "linter": {
+        "rules": {
+          "performance": { "useTopLevelRegex": "off" },
+          "correctness": { "noEmptyPattern": "off" }
+        }
+      }
+    }
+  ]
+}

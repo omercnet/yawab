@@ -1,0 +1,4 @@
+provider: github
+owner: omercnet
+repo: yawn
+updaterCacheDirName: yawn-updater
