@@ -32,7 +32,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "screenshots:marketing": "GENERATE_SCREENSHOTS=1 xvfb-run -a playwright test e2e/marketing-screenshots.spec.ts"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,html}": "biome check --write --no-errors-on-unmatched"
