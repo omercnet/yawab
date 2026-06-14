@@ -3,6 +3,25 @@ import type { JSX } from 'react'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// A ready-to-edit template so users can see the expected headers (a phone
+// column is required; extra columns like `company` become message tokens).
+const TEMPLATE_CSV = `name,phone,company
+Ada Lovelace,+1 415 555 2671,Analytical Engines
+Grace Hopper,+1 415 555 9000,US Navy
+Alan Turing,+44 7911 123456,Bletchley Park
+`
+
+function downloadExampleCsv(): void {
+  const blob = new Blob([TEMPLATE_CSV], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'yawab-contacts-template.csv'
+  document.body.append(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
 interface ContactsStepProps {
   contacts: Contact[]
   onLoaded: (contacts: Contact[]) => void
@@ -37,6 +56,9 @@ export function ContactsStep({
     <section className="card">
       <h2>{t('contacts.title')}</h2>
       <p className="muted">{t('contacts.description')}</p>
+      <button type="button" className="link-inline" onClick={downloadExampleCsv}>
+        ↓ {t('contacts.downloadExample')}
+      </button>
 
       <button
         type="button"
