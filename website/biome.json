@@ -7,16 +7,13 @@
   },
   "files": {
     "includes": [
-      "**",
-      "!website",
-      "!**/out",
-      "!**/dist",
-      "!**/coverage",
-      "!**/node_modules",
-      "!**/pnpm-lock.yaml",
-      "!**/playwright-report",
-      "!**/test-results",
-      "!build"
+      "src/**",
+      "*.{ts,tsx,json,jsonc}",
+      "index.html",
+      "!dist",
+      "!coverage",
+      "!node_modules",
+      "!pnpm-lock.yaml"
     ]
   },
   "formatter": {
@@ -68,16 +65,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/src/main/**", "**/src/preload/**"],
-      "linter": {
-        "rules": {
-          "correctness": { "useHookAtTopLevel": "off" },
-          "suspicious": { "noConsole": "off" }
-        }
-      }
-    },
-    {
-      "includes": ["**/*.test.ts", "**/*.spec.ts", "**/e2e/**"],
+      "includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
       "linter": {
         "rules": {
           "performance": { "useTopLevelRegex": "off" },
