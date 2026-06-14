@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/omercnet/yawab/compare/v1.0.3...v1.1.0) (2026-06-14)
+
+
+### Features
+
+* add settings page with pacing controls and themes ([#16](https://github.com/omercnet/yawab/issues/16)) ([d2f8290](https://github.com/omercnet/yawab/commit/d2f829093b9389f9c9399dc238fbbe9facc20055))
+
 ## [1.0.3](https://github.com/omercnet/yawab/compare/v1.0.2...v1.0.3) (2026-06-14)
 
 
