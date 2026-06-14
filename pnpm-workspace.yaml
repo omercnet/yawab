@@ -1,8 +1,9 @@
 # pnpm 11 reads non-auth settings from here (NOT .npmrc).
 
-# electron-builder needs a flat node_modules (symlinks break app packaging),
-# so use the hoisted linker.
-nodeLinker: hoisted
+# Use pnpm's default isolated node linker. electron-builder 26's pnpm
+# node-modules collector is built for the isolated (.pnpm) layout; forcing
+# `nodeLinker: hoisted` made macOS packaging fail with `⨯ <projectDir> not a
+# file` during the code-signing walk (electron-userland/electron-builder#9580).
 
 # Baileys depends on `libsignal` (whiskeysockets/libsignal-node), which is only
 # distributed as a git dependency. pnpm 11 blocks exotic (git) transitive deps

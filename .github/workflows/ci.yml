@@ -129,3 +129,37 @@ jobs:
           name: playwright-report
           path: playwright-report/
           if-no-files-found: ignore
+
+  package:
+    name: Package installers (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            build: pnpm run build:mac
+          - os: windows-latest
+            build: pnpm run build:win
+          - os: ubuntu-latest
+            build: pnpm run build:linux
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Builds the real installers (dmg / nsis / AppImage + deb) without
+      # publishing, so every PR proves the release packaging works. DEBUG is
+      # enabled on macOS to capture the electron-builder pnpm collector path.
+      - name: Package installers (no publish)
+        run: ${{ matrix.build }} --publish never
+        env:
+          DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder' || '' }}
