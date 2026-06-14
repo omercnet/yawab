@@ -12,6 +12,7 @@ export default function App() {
 
   return (
     <>
+      <div className="scroll-progress" aria-hidden="true" />
       <Nav />
       <main id="main-content">
         <Hero primaryHref={downloads.primaryHref} primaryLabel={downloads.primaryLabel} />

@@ -188,7 +188,7 @@ website/        Marketing site (Vite + React), deployed to GitHub Pages
 ## Website
 
 The landing page lives in [`website/`](website/) and is deployed to
-**https://omercnet.github.io/yawab/** via GitHub Actions. Its download buttons
+**https://yawab.app** via GitHub Actions. Its download buttons
 resolve the latest GitHub release at runtime, so they always point at the newest
 installers with no redeploy. See [`website/README.md`](website/README.md).
 
