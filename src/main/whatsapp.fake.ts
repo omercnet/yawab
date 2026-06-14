@@ -37,6 +37,10 @@ export class FakeWhatsAppService extends EventEmitter implements WhatsAppControl
     return this.status
   }
 
+  configure(): void {
+    // No connection config to apply in the fake.
+  }
+
   connect(): Promise<ConnectionStatus> {
     this.setStatus('connecting')
     // A 1x1 transparent PNG stands in for the rendered QR image.

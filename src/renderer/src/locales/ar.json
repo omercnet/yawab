@@ -72,5 +72,97 @@
   "language": {
     "label": "اللغة",
     "system": "إعداد النظام الافتراضي"
+  },
+  "settings": {
+    "open": "الإعدادات",
+    "title": "الإعدادات",
+    "done": "تمّ",
+    "cancel": "إلغاء",
+    "unit": {
+      "seconds": "ث",
+      "messages": "رسائل",
+      "failures": "إخفاقات"
+    },
+    "pacing": {
+      "title": "الإرسال والإيقاع",
+      "description": "التأخيرات العشوائية تجعل الإرسال يبدو بشريًا وتحمي رقمك.",
+      "presets": "إعدادات الإيقاع",
+      "preset": {
+        "cautious": "حذر",
+        "balanced": "متوازن",
+        "fast": "سريع"
+      },
+      "minLabel": "أدنى تأخير",
+      "maxLabel": "أقصى تأخير",
+      "risk": {
+        "safe": "إيقاع آمن — خطر حظر منخفض.",
+        "caution": "إيقاع سريع — بعض خطر الحظر. يُفضّل الإبطاء.",
+        "danger": "سريع جدًا — خطر حظر مرتفع. أبطئ لحماية رقمك."
+      },
+      "floorHint": "للأمان، لا يمكن ضبط أدنى تأخير أقل من ثانية واحدة.",
+      "capLabel": "حد لكل تشغيل",
+      "capHint": "التوقف بعد هذا العدد من الرسائل في تشغيل واحد. 0 يعني بلا حد.",
+      "batchSizeLabel": "حجم الدفعة",
+      "batchPauseLabel": "توقف بين الدفعات",
+      "stopFailuresLabel": "التوقف بعد الإخفاقات",
+      "stopFailuresHint": "إيقاف إذا أخفق هذا العدد من الرسائل متتاليًا (غالبًا حظر). 0 يعطّل ذلك.",
+      "randomizeLabel": "ترتيب عشوائي",
+      "randomizeHint": "اخلط المستلمين ليبدو الإرسال أقل آلية.",
+      "typingLabel": "محاكاة الكتابة",
+      "typingHint": "إظهار مؤشر الكتابة قبل كل رسالة."
+    },
+    "message": {
+      "title": "افتراضيات الرسالة",
+      "description": "كيفية معالجة الرسائل قبل الإرسال.",
+      "missingTokenLabel": "الرموز المفقودة",
+      "missingTokenHint": "ما العمل عندما لا يكون للعنصر النائب قيمة لجهة اتصال.",
+      "missingToken": {
+        "keep": "الاحتفاظ بنص الرمز",
+        "blank": "استبدال بفراغ"
+      },
+      "footerLabel": "تذييل إلغاء الاشتراك",
+      "footerHint": "إضافة سطر إلغاء اشتراك إلى كل رسالة.",
+      "footerTextLabel": "نص التذييل",
+      "footerPlaceholder": "أرسل STOP لإلغاء الاشتراك"
+    },
+    "csv": {
+      "title": "استيراد CSV",
+      "description": "القيم الافتراضية المطبّقة عند استيراد جهات الاتصال.",
+      "countryCodeLabel": "رمز الدولة الافتراضي",
+      "countryCodeHint": "يُضاف إلى الأرقام المحلية التي لا تحتوي على رمز دولة."
+    },
+    "account": {
+      "title": "الحساب والاتصال",
+      "description": "إدارة جلسة WhatsApp المرتبطة.",
+      "appearOnlineLabel": "الظهور متصلًا",
+      "appearOnlineHint": "وضع علامة على الجلسة كمتصلة أثناء تشغيل التطبيق.",
+      "autoReconnectLabel": "إعادة الاتصال التلقائي",
+      "autoReconnectHint": "إعادة الاتصال تلقائيًا بعد انقطاع الاتصال.",
+      "unlinkLabel": "إلغاء ربط الجهاز",
+      "unlinkHint": "تسجيل الخروج ونسيان جلسة WhatsApp المحفوظة.",
+      "unlink": "إلغاء الربط",
+      "unlinkConfirm": "إلغاء الربط الآن"
+    },
+    "appearance": {
+      "title": "المظهر",
+      "description": "السمة والحركة واللغة.",
+      "themeLabel": "السمة",
+      "systemTheme": "النظام",
+      "reduceMotionLabel": "تقليل الحركة",
+      "reduceMotionHint": "تعطيل الرسوم المتحركة غير الضرورية.",
+      "languageLabel": "اللغة"
+    },
+    "data": {
+      "title": "التحديثات والبيانات",
+      "description": "تحديثات التطبيق ومكان حفظ بياناتك.",
+      "autoUpdateLabel": "التحديثات التلقائية",
+      "autoUpdateHint": "التحقق من التحديثات وتثبيتها عند التشغيل.",
+      "folderLabel": "مجلد البيانات",
+      "openFolder": "فتح",
+      "resetLabel": "إعادة تعيين الإعدادات",
+      "resetHint": "استعادة جميع الإعدادات إلى الوضع الافتراضي.",
+      "reset": "إعادة تعيين",
+      "version": "الإصدار {{version}} · {{platform}}"
+    }
   }
 }

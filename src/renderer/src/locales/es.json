@@ -72,5 +72,97 @@
   "language": {
     "label": "Idioma",
     "system": "Predeterminado del sistema"
+  },
+  "settings": {
+    "open": "Configuración",
+    "title": "Configuración",
+    "done": "Listo",
+    "cancel": "Cancelar",
+    "unit": {
+      "seconds": "s",
+      "messages": "mensajes",
+      "failures": "fallos"
+    },
+    "pacing": {
+      "title": "Envío y ritmo",
+      "description": "Los retrasos aleatorios hacen que el envío parezca humano y protegen tu número.",
+      "presets": "Ajustes de ritmo",
+      "preset": {
+        "cautious": "Cauteloso",
+        "balanced": "Equilibrado",
+        "fast": "Rápido"
+      },
+      "minLabel": "Retraso mínimo",
+      "maxLabel": "Retraso máximo",
+      "risk": {
+        "safe": "Ritmo seguro: bajo riesgo de bloqueo.",
+        "caution": "Ritmo ágil: algo de riesgo de bloqueo. Considera ir más despacio.",
+        "danger": "Muy rápido: alto riesgo de bloqueo. Ve más despacio para proteger tu número."
+      },
+      "floorHint": "Por seguridad, el retraso mínimo no puede ser inferior a 1 segundo.",
+      "capLabel": "Límite por envío",
+      "capHint": "Detener tras esta cantidad de mensajes en un envío. 0 significa sin límite.",
+      "batchSizeLabel": "Tamaño del lote",
+      "batchPauseLabel": "Pausa entre lotes",
+      "stopFailuresLabel": "Detener tras fallos",
+      "stopFailuresHint": "Cancelar si fallan tantos mensajes seguidos (posible bloqueo). 0 lo desactiva.",
+      "randomizeLabel": "Orden aleatorio",
+      "randomizeHint": "Mezcla los destinatarios para que el envío parezca menos automatizado.",
+      "typingLabel": "Simular escritura",
+      "typingHint": "Muestra un indicador de escritura antes de cada mensaje."
+    },
+    "message": {
+      "title": "Valores del mensaje",
+      "description": "Cómo se procesan los mensajes antes de enviarlos.",
+      "missingTokenLabel": "Tokens faltantes",
+      "missingTokenHint": "Qué hacer cuando un marcador no tiene valor para un contacto.",
+      "missingToken": {
+        "keep": "Mantener el texto del token",
+        "blank": "Reemplazar por vacío"
+      },
+      "footerLabel": "Pie de exclusión",
+      "footerHint": "Añade una línea de baja a cada mensaje.",
+      "footerTextLabel": "Texto del pie",
+      "footerPlaceholder": "Responde STOP para darte de baja"
+    },
+    "csv": {
+      "title": "Importar CSV",
+      "description": "Valores aplicados al importar contactos.",
+      "countryCodeLabel": "Código de país predeterminado",
+      "countryCodeHint": "Se antepone a los números locales sin código de país."
+    },
+    "account": {
+      "title": "Cuenta y conexión",
+      "description": "Gestiona tu sesión de WhatsApp vinculada.",
+      "appearOnlineLabel": "Aparecer en línea",
+      "appearOnlineHint": "Marca tu sesión como en línea mientras la app esté abierta.",
+      "autoReconnectLabel": "Reconexión automática",
+      "autoReconnectHint": "Reconectar automáticamente tras una caída de la conexión.",
+      "unlinkLabel": "Desvincular dispositivo",
+      "unlinkHint": "Cierra sesión y olvida la sesión de WhatsApp guardada.",
+      "unlink": "Desvincular",
+      "unlinkConfirm": "Desvincular ahora"
+    },
+    "appearance": {
+      "title": "Apariencia",
+      "description": "Tema, movimiento e idioma.",
+      "themeLabel": "Tema",
+      "systemTheme": "Sistema",
+      "reduceMotionLabel": "Reducir movimiento",
+      "reduceMotionHint": "Desactiva las animaciones no esenciales.",
+      "languageLabel": "Idioma"
+    },
+    "data": {
+      "title": "Actualizaciones y datos",
+      "description": "Actualizaciones de la app y dónde se guardan tus datos.",
+      "autoUpdateLabel": "Actualizaciones automáticas",
+      "autoUpdateHint": "Buscar e instalar actualizaciones al iniciar.",
+      "folderLabel": "Carpeta de datos",
+      "openFolder": "Abrir",
+      "resetLabel": "Restablecer ajustes",
+      "resetHint": "Restaura todos los ajustes a sus valores predeterminados.",
+      "reset": "Restablecer",
+      "version": "Versión {{version}} · {{platform}}"
+    }
   }
 }

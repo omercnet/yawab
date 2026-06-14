@@ -52,6 +52,18 @@ export interface SendOptions {
   minDelayMs: number
   /** Maximum delay between messages in milliseconds (random jitter up to this). */
   maxDelayMs: number
+  /** Stop after sending this many messages in one run. 0/undefined = no cap. */
+  perRunCap?: number
+  /** Take a longer cool-down after every N messages. 0/undefined = no batching. */
+  batchSize?: number
+  /** Cool-down length between batches, in milliseconds. */
+  batchPauseMs?: number
+  /** Abort the run after this many consecutive failures. 0/undefined = never. */
+  stopAfterFailures?: number
+  /** Shuffle recipient order so sends look less mechanical. */
+  randomizeOrder?: boolean
+  /** Emit a "typing…" presence before each message. */
+  simulateTyping?: boolean
 }
 
 export const DEFAULT_SEND_OPTIONS: SendOptions = {

@@ -1,5 +1,4 @@
-import type { Contact } from '@shared/types'
-import { DEFAULT_SEND_OPTIONS } from '@shared/types'
+import type { Contact, SendOptions } from '@shared/types'
 import type { JSX } from 'react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,8 +7,10 @@ import { ConnectStep } from './components/ConnectStep'
 import { ContactsStep } from './components/ContactsStep'
 import { LanguageSelector } from './components/LanguageSelector'
 import { SendStep } from './components/SendStep'
+import { SettingsPage } from './components/SettingsPage'
 import { Stepper } from './components/Stepper'
 import { useLanguage } from './hooks/useLanguage'
+import { useSettings } from './hooks/useSettings'
 import { useWhatsApp } from './hooks/useWhatsApp'
 
 export type Step = 'connect' | 'contacts' | 'compose' | 'send'
@@ -20,11 +21,27 @@ export default function App(): JSX.Element {
   const { t } = useTranslation()
   const wa = useWhatsApp()
   const { preference, setPreference } = useLanguage()
+  const { settings, update } = useSettings()
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [step, setStep] = useState<Step>('connect')
   const [contacts, setContacts] = useState<Contact[]>([])
   const [template, setTemplate] = useState('')
 
   const connected = wa.status === 'connected'
+
+  const sendOptions = useMemo<SendOptions>(
+    () => ({
+      minDelayMs: settings.pacing.minDelayMs,
+      maxDelayMs: settings.pacing.maxDelayMs,
+      perRunCap: settings.pacing.perRunCap,
+      batchSize: settings.pacing.batchSize,
+      batchPauseMs: settings.pacing.batchPauseMs,
+      stopAfterFailures: settings.pacing.stopAfterFailures,
+      randomizeOrder: settings.pacing.randomizeOrder,
+      simulateTyping: settings.pacing.simulateTyping
+    }),
+    [settings.pacing]
+  )
 
   const canVisit = useMemo<Record<Step, boolean>>(
     () => ({
@@ -49,39 +66,60 @@ export default function App(): JSX.Element {
             preference={preference}
             onChange={(next) => void setPreference(next)}
           />
+          <button
+            type="button"
+            className="icon-btn"
+            aria-label={t('settings.open')}
+            onClick={() => setSettingsOpen(true)}
+          >
+            <span aria-hidden="true">⚙️</span>
+          </button>
         </div>
       </header>
 
-      <Stepper steps={STEPS} current={step} canVisit={canVisit} onSelect={setStep} />
+      {settingsOpen ? (
+        <SettingsPage
+          settings={settings}
+          onUpdate={update}
+          languagePreference={preference}
+          onLanguageChange={(next) => void setPreference(next)}
+          connected={connected}
+          onClose={() => setSettingsOpen(false)}
+        />
+      ) : (
+        <>
+          <Stepper steps={STEPS} current={step} canVisit={canVisit} onSelect={setStep} />
 
-      <main className="app__body">
-        {step === 'connect' && (
-          <ConnectStep wa={wa} onContinue={() => setStep('contacts')} />
-        )}
-        {step === 'contacts' && (
-          <ContactsStep
-            contacts={contacts}
-            onLoaded={setContacts}
-            onContinue={() => setStep('compose')}
-          />
-        )}
-        {step === 'compose' && (
-          <ComposeStep
-            template={template}
-            contacts={contacts}
-            onChange={setTemplate}
-            onContinue={() => setStep('send')}
-          />
-        )}
-        {step === 'send' && (
-          <SendStep
-            contacts={contacts}
-            template={template}
-            options={DEFAULT_SEND_OPTIONS}
-            connected={connected}
-          />
-        )}
-      </main>
+          <main className="app__body">
+            {step === 'connect' && (
+              <ConnectStep wa={wa} onContinue={() => setStep('contacts')} />
+            )}
+            {step === 'contacts' && (
+              <ContactsStep
+                contacts={contacts}
+                onLoaded={setContacts}
+                onContinue={() => setStep('compose')}
+              />
+            )}
+            {step === 'compose' && (
+              <ComposeStep
+                template={template}
+                contacts={contacts}
+                onChange={setTemplate}
+                onContinue={() => setStep('send')}
+              />
+            )}
+            {step === 'send' && (
+              <SendStep
+                contacts={contacts}
+                template={template}
+                options={sendOptions}
+                connected={connected}
+              />
+            )}
+          </main>
+        </>
+      )}
     </div>
   )
 }

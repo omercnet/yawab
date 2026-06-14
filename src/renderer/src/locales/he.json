@@ -72,5 +72,97 @@
   "language": {
     "label": "שפה",
     "system": "ברירת מחדל של המערכת"
+  },
+  "settings": {
+    "open": "הגדרות",
+    "title": "הגדרות",
+    "done": "סיום",
+    "cancel": "ביטול",
+    "unit": {
+      "seconds": "שנ׳",
+      "messages": "הודעות",
+      "failures": "כשלים"
+    },
+    "pacing": {
+      "title": "שליחה וקצב",
+      "description": "השהיות אקראיות גורמות לשליחה להיראות אנושית ומגנות על המספר שלך.",
+      "presets": "הגדרות קצב",
+      "preset": {
+        "cautious": "זהיר",
+        "balanced": "מאוזן",
+        "fast": "מהיר"
+      },
+      "minLabel": "השהיה מינימלית",
+      "maxLabel": "השהיה מקסימלית",
+      "risk": {
+        "safe": "קצב בטוח — סיכון חסימה נמוך.",
+        "caution": "קצב מהיר — סיכון חסימה מסוים. כדאי להאט.",
+        "danger": "מהיר מאוד — סיכון חסימה גבוה. האט כדי להגן על המספר שלך."
+      },
+      "floorHint": "מטעמי בטיחות, לא ניתן לקבוע השהיה מינימלית מתחת לשנייה אחת.",
+      "capLabel": "מגבלה לכל ריצה",
+      "capHint": "עצור לאחר מספר הודעות זה בריצה אחת. 0 פירושו ללא הגבלה.",
+      "batchSizeLabel": "גודל אצווה",
+      "batchPauseLabel": "השהיה בין אצוות",
+      "stopFailuresLabel": "עצירה לאחר כשלים",
+      "stopFailuresHint": "בטל אם כל כך הרבה הודעות נכשלות ברצף (כנראה חסימה). 0 מבטל זאת.",
+      "randomizeLabel": "סדר אקראי",
+      "randomizeHint": "ערבב נמענים כדי שהשליחה תיראה פחות אוטומטית.",
+      "typingLabel": "הדמיית הקלדה",
+      "typingHint": "הצג חיווי הקלדה לפני כל הודעה."
+    },
+    "message": {
+      "title": "ברירות מחדל להודעה",
+      "description": "כיצד ההודעות מעובדות לפני השליחה.",
+      "missingTokenLabel": "אסימונים חסרים",
+      "missingTokenHint": "מה לעשות כאשר לתבנית אין ערך עבור איש קשר.",
+      "missingToken": {
+        "keep": "השאר את טקסט האסימון",
+        "blank": "החלף בריק"
+      },
+      "footerLabel": "כותרת הסרה",
+      "footerHint": "הוסף שורת הסרה לכל הודעה.",
+      "footerTextLabel": "טקסט הכותרת",
+      "footerPlaceholder": "השב STOP להסרה"
+    },
+    "csv": {
+      "title": "ייבוא CSV",
+      "description": "ברירות מחדל החלות בעת ייבוא אנשי קשר.",
+      "countryCodeLabel": "קידומת מדינה כברירת מחדל",
+      "countryCodeHint": "מתווספת למספרים מקומיים ללא קידומת מדינה."
+    },
+    "account": {
+      "title": "חשבון וחיבור",
+      "description": "ניהול הפעלת ה-WhatsApp המקושרת.",
+      "appearOnlineLabel": "הצג כמחובר",
+      "appearOnlineHint": "סמן את ההפעלה כמחוברת בזמן שהאפליקציה פועלת.",
+      "autoReconnectLabel": "חיבור מחדש אוטומטי",
+      "autoReconnectHint": "התחבר מחדש אוטומטית לאחר ניתוק.",
+      "unlinkLabel": "ניתוק מכשיר",
+      "unlinkHint": "התנתק ושכח את הפעלת ה-WhatsApp השמורה.",
+      "unlink": "נתק",
+      "unlinkConfirm": "נתק עכשיו"
+    },
+    "appearance": {
+      "title": "מראה",
+      "description": "ערכת נושא, תנועה ושפה.",
+      "themeLabel": "ערכת נושא",
+      "systemTheme": "מערכת",
+      "reduceMotionLabel": "הפחת תנועה",
+      "reduceMotionHint": "השבת אנימציות לא חיוניות.",
+      "languageLabel": "שפה"
+    },
+    "data": {
+      "title": "עדכונים ונתונים",
+      "description": "עדכוני אפליקציה והיכן הנתונים שלך נשמרים.",
+      "autoUpdateLabel": "עדכונים אוטומטיים",
+      "autoUpdateHint": "בדוק והתקן עדכונים בעת ההפעלה.",
+      "folderLabel": "תיקיית נתונים",
+      "openFolder": "פתח",
+      "resetLabel": "איפוס הגדרות",
+      "resetHint": "שחזר את כל ההגדרות לברירת המחדל.",
+      "reset": "אפס",
+      "version": "גרסה {{version}} · {{platform}}"
+    }
   }
 }

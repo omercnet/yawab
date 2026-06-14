@@ -34,6 +34,28 @@ describe('renderTemplate', () => {
     const c: Contact = { ...contact, phone: null }
     expect(renderTemplate('{{phone}}', c)).toBe('+1 415 555 2671')
   })
+
+  it('keeps unknown tokens when missingToken is "keep" (default)', () => {
+    expect(renderTemplate('Hi {{unknown}}', contact, { missingToken: 'keep' })).toBe(
+      'Hi {{unknown}}'
+    )
+  })
+
+  it('blanks unknown tokens when missingToken is "blank"', () => {
+    expect(renderTemplate('Hi {{unknown}}!', contact, { missingToken: 'blank' })).toBe(
+      'Hi !'
+    )
+  })
+
+  it('appends a trimmed footer on its own lines', () => {
+    expect(renderTemplate('Hi {{name}}', contact, { footer: '  Reply STOP  ' })).toBe(
+      'Hi Ada\n\nReply STOP'
+    )
+  })
+
+  it('ignores an empty footer', () => {
+    expect(renderTemplate('Hi {{name}}', contact, { footer: '   ' })).toBe('Hi Ada')
+  })
 })
 
 describe('extractTokens', () => {
