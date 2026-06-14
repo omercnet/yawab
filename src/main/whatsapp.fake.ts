@@ -10,7 +10,7 @@ import type { WhatsAppController, WhatsAppEvents } from './whatsapp'
 
 /**
  * A deterministic, network-free stand-in for {@link WhatsAppService}, activated
- * via the `YAWN_FAKE_WA` env flag. It mimics the pairing handshake and bulk-send
+ * via the `YAWAB_FAKE_WA` env flag. It mimics the pairing handshake and bulk-send
  * progress so end-to-end tests can drive the full UI/IPC flow without a real
  * WhatsApp account. A single configurable number is reported as "not on
  * WhatsApp" so the failure path stays covered.

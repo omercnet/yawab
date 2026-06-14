@@ -1,6 +1,6 @@
-appId: com.yawn.app
-productName: Yawn
-copyright: Copyright © 2026 Yawn
+appId: com.yawab.app
+productName: Yawab
+copyright: Copyright © 2026 Yawab
 directories:
   buildResources: build
   output: dist
@@ -45,12 +45,12 @@ linux:
   target:
     - AppImage
     - deb
-  maintainer: yawn
+  maintainer: yawab
   category: Utility
   artifactName: ${productName}-${version}-${arch}.${ext}
 publish:
   provider: github
   owner: omercnet
-  repo: yawn
+  repo: yawab
 electronDownload:
   mirror: https://github.com/electron/electron/releases/download/

@@ -22,7 +22,7 @@ test('runs the full pair → upload → compose → send wizard', async ({ page 
 
   // Step 3: compose with a personalisation token; preview should render.
   await expect(card.getByRole('heading', { name: 'Compose your message' })).toBeVisible()
-  await page.getByRole('textbox').fill('Hi {{name}}, hello from Yawn!')
+  await page.getByRole('textbox').fill('Hi {{name}}, hello from Yawab!')
   await expect(card.getByText(/^Preview for/)).toBeVisible()
   await card.getByRole('button', { name: 'Review & send' }).click()
 

@@ -42,7 +42,7 @@ export interface WhatsAppController {
   ): Promise<SendResult[]>
 }
 
-const logger = pino({ level: process.env.YAWN_LOG_LEVEL ?? 'silent' })
+const logger = pino({ level: process.env.YAWAB_LOG_LEVEL ?? 'silent' })
 
 /**
  * Wraps a Baileys socket and exposes a small, UI-friendly surface: connect,
@@ -94,7 +94,7 @@ export class WhatsAppService extends EventEmitter implements WhatsAppController 
       auth: state,
       logger,
       printQRInTerminal: false,
-      browser: ['Yawn', 'Chrome', '1.0.0'],
+      browser: ['Yawab', 'Chrome', '1.0.0'],
       markOnlineOnConnect: false
     })
     this.sock = sock
