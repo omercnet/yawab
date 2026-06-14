@@ -159,7 +159,11 @@ jobs:
       # Builds the real installers (dmg / nsis / AppImage + deb) without
       # publishing, so every PR proves the release packaging works. DEBUG is
       # enabled on macOS to capture the electron-builder pnpm collector path.
+      # CSC_FOR_PULL_REQUEST forces macOS to run the (ad-hoc) code-signing walk
+      # that electron-builder skips in PRs by default — that walk is the exact
+      # step the v1.0.0 release failed on, so we must exercise it here.
       - name: Package installers (no publish)
         run: ${{ matrix.build }} --publish never
         env:
           DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder' || '' }}
+          CSC_FOR_PULL_REQUEST: 'true'
