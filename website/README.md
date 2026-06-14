@@ -1,7 +1,7 @@
 # Yawab website
 
 The marketing/landing site for [Yawab](https://github.com/omercnet/yawab),
-served at **https://omercnet.github.io/yawab/**.
+served at **https://yawab.app**.
 
 A standalone Vite + React + TypeScript app, intentionally isolated from the
 Electron app's toolchain so its CI is fast and its dependency tree stays tiny.
@@ -40,12 +40,13 @@ latest release automatically.
 
 ## Base path
 
-This is a GitHub **project page**, so assets live under `/yawab/`. The Vite
-`base` is env-driven:
+The site is served from the **`yawab.app`** apex domain, so the Vite `base` is
+`/` (a committed `public/CNAME` keeps the custom domain set across Actions
+deploys). The base stays env-driven for the relative PR-preview build:
 
 ```bash
-VITE_BASE_PATH=/yawab/ pnpm build     # production (default)
-VITE_BASE_PATH=./ pnpm build          # relative base (PR preview artifact)
+pnpm build                    # production, base / (default)
+VITE_BASE_PATH=./ pnpm build  # relative base (PR preview artifact)
 ```
 
 The download URLs are absolute `github.com` links, so they are unaffected by the
