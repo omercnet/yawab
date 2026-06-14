@@ -1,0 +1,352 @@
+/* ====================================================================
+   Yawab — Design System · "Midnight Precision"
+   ==================================================================== */
+
+/* ── Color tokens ──────────────────────────────────────────────────── */
+:root {
+  --c-void: #050508;
+  --c-surface: #0c0c12;
+  --c-elevated: #131320;
+  --c-card: #18182a;
+  --c-border: rgba(255, 255, 255, 0.06);
+  --c-border-strong: rgba(255, 255, 255, 0.13);
+  --c-accent: #00e676;
+  --c-accent-dim: rgba(0, 230, 118, 0.1);
+  --c-accent-glow: rgba(0, 230, 118, 0.22);
+  --c-accent-subtle: rgba(0, 230, 118, 0.06);
+  --c-purple: #8b5cf6;
+  --c-purple-dim: rgba(139, 92, 246, 0.08);
+  --c-text-1: #f0f0f8;
+  --c-text-2: #8e8eb0;
+  --c-text-3: #474768;
+  --c-white: #ffffff;
+
+  /* ── Type scale ──────────────────────────────────────────────────── */
+  --fs-xs: clamp(0.75rem, 0.9vw, 0.8125rem);
+  --fs-sm: clamp(0.8125rem, 1.1vw, 0.9375rem);
+  --fs-base: clamp(0.9375rem, 1.3vw, 1.0625rem);
+  --fs-lg: clamp(1.125rem, 1.7vw, 1.3125rem);
+  --fs-xl: clamp(1.375rem, 2.4vw, 1.75rem);
+  --fs-2xl: clamp(1.875rem, 3.2vw, 2.5rem);
+  --fs-3xl: clamp(2.5rem, 4.8vw, 3.75rem);
+  --fs-4xl: clamp(3rem, 6.5vw, 5.5rem);
+  --fs-hero: clamp(3.5rem, 9vw, 8rem);
+
+  /* ── Spacing ─────────────────────────────────────────────────────── */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-20: 5rem;
+  --sp-24: 6rem;
+  --sp-32: 8rem;
+
+  /* ── Motion ──────────────────────────────────────────────────────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --dur-fast: 180ms;
+  --dur-base: 380ms;
+  --dur-slow: 650ms;
+  --dur-xslow: 900ms;
+
+  /* ── Shape ───────────────────────────────────────────────────────── */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-full: 9999px;
+
+  /* ── Shadow ──────────────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.65);
+  --shadow-accent: 0 0 48px var(--c-accent-glow);
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  --content-max: 1180px;
+  --content-narrow: 760px;
+  --nav-h: 64px;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-size: var(--fs-base);
+  color: var(--c-text-1);
+  background-color: var(--c-void);
+  overflow-x: hidden;
+  line-height: 1.65;
+}
+
+/* ── Focus ───────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ── Selection ───────────────────────────────────────────────────────── */
+::selection {
+  background: var(--c-accent);
+  color: var(--c-void);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-text-3);
+  border-radius: var(--r-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-text-2);
+}
+
+/* ── Skip link ───────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: var(--sp-4);
+  padding: var(--sp-2) var(--sp-6);
+  background: var(--c-accent);
+  color: var(--c-void);
+  font-weight: 600;
+  border-radius: var(--r-full);
+  text-decoration: none;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.skip-link:focus-visible {
+  left: var(--sp-4);
+  outline: 3px solid var(--c-white);
+}
+
+/* ── Reveal animation ────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out-expo),
+    transform var(--dur-slow) var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* CSS scroll-driven animations where supported */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(48px) scale(0.94);
+      filter: blur(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal.in-view {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+  }
+}
+
+/* ── Section chrome ──────────────────────────────────────────────────── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-family: "Unbounded", monospace;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: var(--sp-6);
+}
+
+.section-label::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--c-accent);
+}
+
+/* ── Apple-style scroll choreography (scrubbed, reduced-motion safe) ───── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--c-accent), #5eead4);
+  box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+  z-index: 100;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes progress-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    /* Screenshot frames rise, scale and settle as they enter. */
+    .shot-item {
+      animation: shot-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    @keyframes shot-in {
+      from {
+        opacity: 0;
+        transform: translateY(80px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Continuous parallax lift on the framed device inside each item. */
+    .shot-frame {
+      animation: shot-parallax linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    @keyframes shot-parallax {
+      from {
+        transform: translateY(26px);
+      }
+      to {
+        transform: translateY(-26px);
+      }
+    }
+
+    /* Giant feature numbers scrub-scale through their row. */
+    .feature-num {
+      display: inline-block;
+      animation: num-scrub linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 60%;
+    }
+
+    @keyframes num-scrub {
+      from {
+        opacity: 0.2;
+        transform: translateY(40px) scale(0.7);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Oversized headings clip-wipe in from the top. */
+    .features-heading,
+    .screenshots-heading,
+    .download-heading {
+      animation: heading-wipe linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+
+    @keyframes heading-wipe {
+      from {
+        opacity: 0;
+        clip-path: inset(0 0 100% 0);
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+        transform: none;
+      }
+    }
+  }
+}

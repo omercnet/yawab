@@ -182,7 +182,15 @@ src/
 e2e/           Playwright end-to-end specs + CSV fixtures
 .github/
   workflows/   CI (lint/typecheck/unit/e2e/build) and Release (mac/win/linux)
+website/        Marketing site (Vite + React), deployed to GitHub Pages
 ```
+
+## Website
+
+The landing page lives in [`website/`](website/) and is deployed to
+**https://yawab.app** via GitHub Actions. Its download buttons
+resolve the latest GitHub release at runtime, so they always point at the newest
+installers with no redeploy. See [`website/README.md`](website/README.md).
 
 ## Acknowledgements
 
