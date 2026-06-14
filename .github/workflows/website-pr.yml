@@ -1,0 +1,89 @@
+name: Website PR
+
+# Build, lint and test the marketing site on every PR that touches it, and
+# publish the built site as a downloadable preview artifact with a sticky
+# comment. GitHub Pages serves a single Actions deployment, so per-PR live
+# Pages URLs are not possible; the artifact is the preview (matches the repo's
+# existing installer-artifact PR pattern). The artifact is built with a relative
+# base so it opens locally without a /yawab/ server.
+on:
+  pull_request:
+    paths:
+      - 'website/**'
+      - '.github/workflows/website-pr.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: website-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build, lint & test site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: website
+
+      - name: Biome (lint + format)
+        run: pnpm run check
+        working-directory: website
+
+      - name: Test (coverage)
+        run: pnpm run test:coverage
+        working-directory: website
+
+      - name: Build preview (relative base)
+        run: pnpm run build
+        working-directory: website
+        env:
+          VITE_BASE_PATH: './'
+
+      - name: Upload site preview artifact
+        id: artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: website-preview-pr-${{ github.event.pull_request.number }}
+          path: website/dist
+          if-no-files-found: error
+
+      - name: Sticky preview comment
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const marker = '<!-- website-preview -->'
+            const { owner, repo } = context.repo
+            const issue_number = context.issue.number
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`
+            const artifactUrl = `${runUrl}#artifacts`
+            const body = [
+              marker,
+              '### 🌐 Website preview build',
+              '',
+              `Built from \`${context.sha.slice(0, 7)}\` with a relative asset base, so it opens straight from disk.`,
+              '',
+              `📦 **[Download the preview artifact](${artifactUrl})** → unzip → open \`index.html\` (or run \`pnpm dlx serve dist\`).`,
+              '',
+              `<sub>Updated automatically by the \`website-pr\` workflow · [workflow run](${runUrl})</sub>`,
+            ].join('\n')
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number })
+            const existing = comments.find((c) => c.body && c.body.includes(marker))
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body })
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body })
+            }
