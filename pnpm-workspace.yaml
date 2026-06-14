@@ -21,3 +21,8 @@ allowBuilds:
   dmg-license: true
   '@whiskeysockets/baileys': true
   protobufjs: true
+
+# Force a patched esbuild (pulled transitively by vite/electron-vite) to address
+# GHSA-gv7w-rqvm-qjhr (RCE in esbuild's Deno installer for < 0.28.1).
+overrides:
+  esbuild: '>=0.28.1'
