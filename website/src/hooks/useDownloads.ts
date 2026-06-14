@@ -4,6 +4,7 @@ import {
   type DownloadLinks,
   fetchLatestDownloads,
   RELEASES_LATEST_URL,
+  readCachedDownloads,
   resolveDownloads
 } from '../lib/downloads'
 
@@ -75,7 +76,7 @@ const toResolved = (links: DownloadLinks): ResolvedDownloads => {
  */
 export function useDownloads(): ResolvedDownloads {
   const [resolved, setResolved] = useState<ResolvedDownloads>(() =>
-    toResolved(resolveDownloads(null))
+    toResolved(readCachedDownloads() ?? resolveDownloads(null))
   )
 
   useEffect(() => {

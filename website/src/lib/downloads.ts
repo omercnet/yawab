@@ -127,23 +127,33 @@ export function resolveDownloads(release: GithubRelease | null): DownloadLinks {
   }
 }
 
+/**
+ * Reads the last successfully-resolved links from sessionStorage for an instant
+ * first paint. The caller MUST still call fetchLatestDownloads() to revalidate —
+ * the cache is never authoritative (stale-while-revalidate), so a new release is
+ * always picked up on the next render instead of being pinned for the session.
+ */
+export function readCachedDownloads(): DownloadLinks | null {
+  const storage = getSessionStorage()
+  const cached = storage?.getItem(CACHE_KEY)
+
+  if (!cached) {
+    return null
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(cached)
+    return isDownloadLinks(parsed) ? parsed : null
+  } catch {
+    storage?.removeItem(CACHE_KEY)
+    return null
+  }
+}
+
 export async function fetchLatestDownloads(
   fetchImpl: typeof fetch = fetch
 ): Promise<DownloadLinks> {
   const storage = getSessionStorage()
-  const cached = storage?.getItem(CACHE_KEY)
-
-  if (cached) {
-    try {
-      const parsed: unknown = JSON.parse(cached)
-
-      if (isDownloadLinks(parsed)) {
-        return parsed
-      }
-    } catch {
-      storage?.removeItem(CACHE_KEY)
-    }
-  }
 
   try {
     const response = await fetchImpl(GITHUB_LATEST_RELEASE_URL, {
