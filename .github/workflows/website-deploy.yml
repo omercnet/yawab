@@ -41,11 +41,11 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: website
 
-      - name: Build (base /yawab/)
+      - name: Build (custom domain, base /)
         run: pnpm run build
         working-directory: website
         env:
-          VITE_BASE_PATH: /yawab/
+          VITE_BASE_PATH: /
 
       - uses: actions/configure-pages@v5
 
