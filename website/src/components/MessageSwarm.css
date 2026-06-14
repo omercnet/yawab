@@ -1,0 +1,23 @@
+/* Decorative canvas layer: sits above the mesh/grid, below .hero-content.
+   Masked to a soft vignette so the bubbles melt into the hero background. */
+.message-swarm {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(
+    120% 75% at 50% 42%,
+    rgba(0, 0, 0, 1) 28%,
+    transparent 76%
+  );
+  mask-image: radial-gradient(120% 75% at 50% 42%, rgba(0, 0, 0, 1) 28%, transparent 76%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-swarm {
+    display: none;
+  }
+}

@@ -172,17 +172,19 @@ body {
   .reveal {
     animation: reveal-up linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 30%;
+    animation-range: entry 0% cover 40%;
   }
 
   @keyframes reveal-up {
     from {
       opacity: 0;
-      transform: translateY(28px);
+      transform: translateY(48px) scale(0.94);
+      filter: blur(8px);
     }
     to {
       opacity: 1;
       transform: none;
+      filter: none;
     }
   }
 }
@@ -231,4 +233,120 @@ body {
   width: 20px;
   height: 1px;
   background: var(--c-accent);
+}
+
+/* ── Apple-style scroll choreography (scrubbed, reduced-motion safe) ───── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--c-accent), #5eead4);
+  box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+  z-index: 100;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes progress-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    /* Screenshot frames rise, scale and settle as they enter. */
+    .shot-item {
+      animation: shot-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    @keyframes shot-in {
+      from {
+        opacity: 0;
+        transform: translateY(80px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Continuous parallax lift on the framed device inside each item. */
+    .shot-frame {
+      animation: shot-parallax linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    @keyframes shot-parallax {
+      from {
+        transform: translateY(26px);
+      }
+      to {
+        transform: translateY(-26px);
+      }
+    }
+
+    /* Giant feature numbers scrub-scale through their row. */
+    .feature-num {
+      display: inline-block;
+      animation: num-scrub linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 60%;
+    }
+
+    @keyframes num-scrub {
+      from {
+        opacity: 0.2;
+        transform: translateY(40px) scale(0.7);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Oversized headings clip-wipe in from the top. */
+    .features-heading,
+    .screenshots-heading,
+    .download-heading {
+      animation: heading-wipe linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+
+    @keyframes heading-wipe {
+      from {
+        opacity: 0;
+        clip-path: inset(0 0 100% 0);
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+        transform: none;
+      }
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import MessageSwarm from './MessageSwarm'
 import './Hero.css'
 
 const DOWNLOAD_URL = 'https://github.com/omercnet/yawab/releases/latest'
@@ -24,8 +25,9 @@ export default function Hero({
 
     const handler = () => {
       const progress = Math.min(window.scrollY / window.innerHeight, 1)
-      el.style.transform = `translateY(${progress * 50}px)`
-      el.style.opacity = String(Math.max(0, 1 - progress * 1.5))
+      el.style.transform = `translateY(${progress * 64}px) scale(${1 - progress * 0.07})`
+      el.style.opacity = String(Math.max(0, 1 - progress * 1.35))
+      el.style.filter = `blur(${(progress * 6).toFixed(2)}px)`
     }
 
     window.addEventListener('scroll', handler, { passive: true })
@@ -36,6 +38,7 @@ export default function Hero({
     <section className="hero" aria-labelledby="hero-heading">
       <div className="hero-mesh" aria-hidden="true" />
       <div className="hero-grid" aria-hidden="true" />
+      <MessageSwarm />
 
       <div className="hero-content" ref={contentRef}>
         <p className="hero-eyebrow">
