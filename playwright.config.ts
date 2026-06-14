@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test'
 
 /**
  * End-to-end tests drive the built Electron app (out/) with a fake WhatsApp
- * backend (YAWN_FAKE_WA), so run `npm run build` first. Electron is single
+ * backend (YAWAB_FAKE_WA), so run `npm run build` first. Electron is single
  * instance per launch, so we keep workers serial.
  */
 export default defineConfig({

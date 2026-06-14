@@ -1,8 +1,8 @@
 {
-  "name": "yawn",
+  "name": "yawab",
   "version": "0.0.0",
   "description": "Cross-platform desktop app to send WhatsApp messages to a CSV contact list, paired over QR using Baileys.",
-  "author": "yawn",
+  "author": "yawab",
   "license": "MIT",
   "main": "./out/main/index.js",
   "type": "module",

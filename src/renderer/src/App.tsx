@@ -39,7 +39,7 @@ export default function App(): JSX.Element {
   return (
     <div className="app">
       <header className="app__header">
-        <h1 className="app__brand">Yawn</h1>
+        <h1 className="app__brand">Yawab</h1>
         <span className="app__subtitle">{t('app.subtitle')}</span>
         <div className="app__header-end">
           <output className={`status-pill status-pill--${wa.status}`}>

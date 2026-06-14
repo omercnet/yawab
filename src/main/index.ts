@@ -20,7 +20,7 @@ function createWindow(): void {
     minHeight: 560,
     show: false,
     autoHideMenuBar: true,
-    title: 'Yawn',
+    title: 'Yawab',
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false,
@@ -51,7 +51,7 @@ function send(channel: string, payload: unknown): void {
 
 function getService(): WhatsAppController {
   if (!whatsapp) {
-    whatsapp = process.env.YAWN_FAKE_WA
+    whatsapp = process.env.YAWAB_FAKE_WA
       ? new FakeWhatsAppService()
       : new WhatsAppService(join(app.getPath('userData'), 'wa-auth'))
     whatsapp.on('status', (status) => send(IpcEvents.status, status))
@@ -94,7 +94,7 @@ function registerIpc(): void {
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.yawn.app')
+  electronApp.setAppUserModelId('com.yawab.app')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
@@ -119,7 +119,7 @@ app.on('window-all-closed', () => {
  * offline, or no published release yet) are non-fatal.
  */
 async function checkForUpdates(): Promise<void> {
-  if (is.dev || process.env.YAWN_FAKE_WA) return
+  if (is.dev || process.env.YAWAB_FAKE_WA) return
   try {
     const { autoUpdater } = await import('electron-updater')
     await autoUpdater.checkForUpdatesAndNotify()

@@ -14,14 +14,14 @@ export const appRoot = join(currentDir, '..')
 
 /** Create an isolated, throwaway userData directory for a launch. */
 export function tempUserDataDir(): string {
-  return mkdtempSync(join(tmpdir(), 'yawn-e2e-'))
+  return mkdtempSync(join(tmpdir(), 'yawab-e2e-'))
 }
 
 /** Launch the built Electron app (fake WhatsApp backend) at a given profile. */
 export function launchAppAt(userDataDir: string): Promise<ElectronApplication> {
   return _electron.launch({
     args: [appRoot, '--no-sandbox', `--user-data-dir=${userDataDir}`],
-    env: { ...process.env, YAWN_FAKE_WA: '1', NODE_ENV: 'production' }
+    env: { ...process.env, YAWAB_FAKE_WA: '1', NODE_ENV: 'production' }
   })
 }
 
@@ -73,6 +73,6 @@ export async function gotoCompose(page: Page): Promise<void> {
   const card = page.locator('.card')
   await page.locator('input[type="file"]').setInputFiles(fixture('contacts.csv'))
   await card.getByRole('button', { name: /^Continue \(3\)$/ }).click()
-  await page.getByRole('textbox').fill('Hi {{name}}, hello from Yawn!')
+  await page.getByRole('textbox').fill('Hi {{name}}, hello from Yawab!')
   await expect(card.getByText(/^Preview for/)).toBeVisible()
 }

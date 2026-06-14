@@ -1,4 +1,4 @@
-# Yawn
+# Yawab
 
 A cross-platform desktop app that pairs with your WhatsApp account over a QR
 code and sends a personalised message to a list of contacts loaded from a CSV
@@ -95,7 +95,7 @@ Two layers, both run in CI:
   the entire wizard (pair → upload → compose → send), plus language switching,
   RTL direction, and preference persistence across restarts. WhatsApp is
   replaced by a deterministic fake (`FakeWhatsAppService`, enabled with the
-  `YAWN_FAKE_WA` env flag) so no real account or network is needed.
+  `YAWAB_FAKE_WA` env flag) so no real account or network is needed.
 - **Visual regression (Playwright screenshots)** — `e2e/visual.spec.ts`
   snapshots every screen, including the Hebrew/Arabic RTL layouts. Baselines
   live in `e2e/visual.spec.ts-snapshots/` and are platform-suffixed (`-linux`);
