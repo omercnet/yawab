@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/omercnet/yawab/compare/v1.0.2...v1.0.3) (2026-06-14)
+
+
+### Bug Fixes
+
+* upload releases ([b145d5c](https://github.com/omercnet/yawab/commit/b145d5c6ce52a5f84ce9cc861fbfea28c984c32f))
+
 ## [1.0.2](https://github.com/omercnet/yawab/compare/v1.0.1...v1.0.2) (2026-06-14)
 
 
