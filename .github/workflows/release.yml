@@ -1,9 +1,8 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  # Manual re-release only. Automated releases are published by release-please.yml's
+  # publish job (a tag trigger here would double-build every release).
   workflow_dispatch:
 
 permissions:
