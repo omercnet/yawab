@@ -55,5 +55,9 @@ publish:
   provider: github
   owner: omercnet
   repo: yawab
+  # release-please creates the GitHub release as a published release; without
+  # this electron-builder defaults to `draft` and refuses to upload assets
+  # ("existing type not compatible: existingType=release publishingType=draft").
+  releaseType: release
 electronDownload:
   mirror: https://github.com/electron/electron/releases/download/

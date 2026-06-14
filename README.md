@@ -112,17 +112,16 @@ npm run build && npx playwright test --update-snapshots  # refresh baselines
 
 ## Releases & auto-update
 
-Pushing a `v*` tag triggers `.github/workflows/release.yml`, which builds and
-publishes **macOS (`.dmg`), Windows (NSIS), and Linux (AppImage + `.deb`)**
-artifacts to a GitHub Release across a macOS/Windows/Linux runner matrix. To
-enable macOS code signing / notarization, set the `CSC_LINK`,
-`CSC_KEY_PASSWORD`, `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, and
-`APPLE_TEAM_ID` repository secrets.
+Releases are automated with
+[release-please](https://github.com/googleapis/release-please). It watches
+Conventional Commits on `main` and keeps a **release PR** open; merging that PR
+bumps the version, tags it, and the publish job in `release-please.yml` builds and
+uploads **macOS (`.dmg`), Windows (NSIS), and Linux (AppImage + `.deb`)** artifacts
+to the GitHub Release across a macOS/Windows/Linux runner matrix.
 
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
+To enable macOS code signing / notarization, set the `CSC_LINK`,
+`CSC_KEY_PASSWORD`, `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, and
+`APPLE_TEAM_ID` repository secrets (see the macOS troubleshooting section below).
 
 On launch, production builds check GitHub Releases for a newer version via
 [`electron-updater`](https://www.electron.build/auto-update) and notify the user
