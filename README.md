@@ -128,6 +128,34 @@ On launch, production builds check GitHub Releases for a newer version via
 [`electron-updater`](https://www.electron.build/auto-update) and notify the user
 (no-op in dev and tests).
 
+### macOS: “Yawab.app is damaged and can’t be opened”
+
+This is **macOS Gatekeeper**, not a corrupt download. Builds that aren’t signed
+with an Apple **Developer ID** and **notarized** are quarantined when downloaded,
+and on Apple Silicon that surfaces as the “damaged” message.
+
+**The real fix — a signed + notarized build (no warning, no Terminal):** the
+release pipeline is already wired for it (`hardenedRuntime` and entitlements are
+set), so adding these repository secrets makes every published `.dmg` open with
+a normal double-click:
+
+| Secret | What it is |
+| --- | --- |
+| `CSC_LINK` | base64 of your *Developer ID Application* certificate (`.p12`) |
+| `CSC_KEY_PASSWORD` | password for that `.p12` |
+| `APPLE_ID` | your Apple ID email |
+| `APPLE_APP_SPECIFIC_PASSWORD` | an app-specific password for that Apple ID |
+| `APPLE_TEAM_ID` | your Apple Developer Team ID |
+
+This needs an **Apple Developer Program** membership ($99/yr); there is no free
+way to remove the warning entirely.
+
+**Until a signed build ships, to open the current build:**
+
+- **Reliable:** `xattr -cr /Applications/Yawab.app` (clears the quarantine flag).
+- **GUI** (works for a plain “unidentified developer” prompt, less reliably for
+  “damaged”): **System Settings → Privacy & Security → Open Anyway**.
+
 ## Internationalization
 
 UI strings live in `src/renderer/src/locales/<lang>.json` (one file per language:
