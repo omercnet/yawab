@@ -1,0 +1,75 @@
+{
+  "app": {
+    "subtitle": "إرسال رسائل WhatsApp بالجملة"
+  },
+  "status": {
+    "disconnected": "غير متصل",
+    "connecting": "جارٍ الاتصال",
+    "qr": "امسح رمز QR",
+    "connected": "متصل",
+    "logged-out": "تم تسجيل الخروج"
+  },
+  "steps": {
+    "navLabel": "خطوات الإعداد",
+    "connect": "الاتصال",
+    "contacts": "جهات الاتصال",
+    "compose": "الكتابة",
+    "send": "الإرسال"
+  },
+  "connect": {
+    "title": "اربط حساب WhatsApp الخاص بك",
+    "instructions": "على هاتفك، افتح WhatsApp وانتقل إلى الإعدادات ← الأجهزة المرتبطة ← ربط جهاز، ثم امسح رمز QR أدناه.",
+    "ready": "متصل وجاهز للإرسال.",
+    "continue": "متابعة",
+    "logout": "تسجيل الخروج",
+    "generating": "جارٍ إنشاء رمز QR…",
+    "press": "اضغط على ‘الاتصال’ لإنشاء رمز الربط.",
+    "waiting": "في انتظار المسح…",
+    "connect": "الاتصال",
+    "qrAlt": "رمز QR لربط WhatsApp"
+  },
+  "contacts": {
+    "title": "تحميل جهات الاتصال",
+    "description": "اختر ملف CSV يحتوي على عمود للهاتف (وعمود للاسم اختياريًا). تصبح الأعمدة الإضافية رموزًا للرسالة.",
+    "dropzone": "أفلت ملف CSV هنا أو انقر للتصفح",
+    "readError": "تعذّر قراءة الملف",
+    "valid": "{{count}} صالحة",
+    "skipped": "{{count}} متخطّاة",
+    "thName": "الاسم",
+    "thPhone": "الهاتف",
+    "continue": "متابعة ({{count}})"
+  },
+  "compose": {
+    "title": "اكتب رسالتك",
+    "help": "استخدم رموزًا مثل {{example}} لتخصيص كل رسالة.",
+    "placeholder": "مرحبًا {{name}}، …",
+    "unknownTokens": "رموز غير معروفة: {{tokens}}",
+    "previewFor": "معاينة لـ {{name}}",
+    "review": "مراجعة وإرسال"
+  },
+  "send": {
+    "title": "الإرسال",
+    "summary": "جارٍ الإرسال إلى {{count}} جهة اتصال بتأخير عشوائي يتراوح بين {{min}} و{{max}} ثانية بين الرسائل.",
+    "sent": "{{count}} مُرسلة",
+    "failed": "{{count}} فاشلة",
+    "skipped": "{{count}} متخطّاة",
+    "sendingTo": "جارٍ الإرسال إلى {{name}}…",
+    "start": "بدء الإرسال",
+    "again": "إرسال مرة أخرى",
+    "cancel": "إلغاء",
+    "results": "النتائج ({{count}})",
+    "thName": "الاسم",
+    "thPhone": "الهاتف",
+    "thStatus": "الحالة",
+    "thError": "الخطأ"
+  },
+  "result": {
+    "sent": "مُرسلة",
+    "failed": "فاشلة",
+    "skipped": "متخطّاة"
+  },
+  "language": {
+    "label": "اللغة",
+    "system": "إعداد النظام الافتراضي"
+  }
+}

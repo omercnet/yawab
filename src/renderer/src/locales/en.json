@@ -1,0 +1,75 @@
+{
+  "app": {
+    "subtitle": "WhatsApp bulk sender"
+  },
+  "status": {
+    "disconnected": "Disconnected",
+    "connecting": "Connecting",
+    "qr": "Scan QR",
+    "connected": "Connected",
+    "logged-out": "Logged out"
+  },
+  "steps": {
+    "navLabel": "Setup steps",
+    "connect": "Connect",
+    "contacts": "Contacts",
+    "compose": "Compose",
+    "send": "Send"
+  },
+  "connect": {
+    "title": "Connect your WhatsApp",
+    "instructions": "On your phone, open WhatsApp and go to Settings → Linked Devices → Link a Device, then scan the QR code below.",
+    "ready": "Connected and ready to send.",
+    "continue": "Continue",
+    "logout": "Log out",
+    "generating": "Generating QR code…",
+    "press": "Press Connect to generate a pairing code.",
+    "waiting": "Waiting for scan…",
+    "connect": "Connect",
+    "qrAlt": "WhatsApp pairing QR code"
+  },
+  "contacts": {
+    "title": "Upload contacts",
+    "description": "Pick a CSV with a phone column (and optionally a name column). Extra columns become message tokens.",
+    "dropzone": "Drop a CSV here or click to browse",
+    "readError": "Failed to read file",
+    "valid": "{{count}} valid",
+    "skipped": "{{count}} skipped",
+    "thName": "Name",
+    "thPhone": "Phone",
+    "continue": "Continue ({{count}})"
+  },
+  "compose": {
+    "title": "Compose your message",
+    "help": "Use tokens like {{example}} to personalise each message.",
+    "placeholder": "Hi {{name}}, …",
+    "unknownTokens": "Unknown tokens: {{tokens}}",
+    "previewFor": "Preview for {{name}}",
+    "review": "Review & send"
+  },
+  "send": {
+    "title": "Send",
+    "summary": "Sending to {{count}} contacts with a randomized {{min}}–{{max}}s delay between messages.",
+    "sent": "{{count}} sent",
+    "failed": "{{count}} failed",
+    "skipped": "{{count}} skipped",
+    "sendingTo": "Sending to {{name}}…",
+    "start": "Start sending",
+    "again": "Send again",
+    "cancel": "Cancel",
+    "results": "Results ({{count}})",
+    "thName": "Name",
+    "thPhone": "Phone",
+    "thStatus": "Status",
+    "thError": "Error"
+  },
+  "result": {
+    "sent": "sent",
+    "failed": "failed",
+    "skipped": "skipped"
+  },
+  "language": {
+    "label": "Language",
+    "system": "System default"
+  }
+}

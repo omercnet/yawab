@@ -1,0 +1,75 @@
+{
+  "app": {
+    "subtitle": "שליחת הודעות WhatsApp בכמות"
+  },
+  "status": {
+    "disconnected": "מנותק",
+    "connecting": "מתחבר",
+    "qr": "סריקת QR",
+    "connected": "מחובר",
+    "logged-out": "מנותק מהחשבון"
+  },
+  "steps": {
+    "navLabel": "שלבי ההגדרה",
+    "connect": "חיבור",
+    "contacts": "אנשי קשר",
+    "compose": "כתיבה",
+    "send": "שליחה"
+  },
+  "connect": {
+    "title": "חברו את ה‑WhatsApp שלכם",
+    "instructions": "בטלפון, פתחו את WhatsApp ועברו אל הגדרות ← מכשירים מקושרים ← קישור מכשיר, ולאחר מכן סרקו את קוד ה‑QR שמופיע למטה.",
+    "ready": "מחובר ומוכן לשליחה.",
+    "continue": "המשך",
+    "logout": "התנתקות",
+    "generating": "יוצר קוד QR…",
+    "press": "לחצו על ‘חיבור’ ליצירת קוד התאמה.",
+    "waiting": "ממתין לסריקה…",
+    "connect": "חיבור",
+    "qrAlt": "קוד QR לחיבור WhatsApp"
+  },
+  "contacts": {
+    "title": "העלאת אנשי קשר",
+    "description": "בחרו קובץ CSV עם עמודת טלפון (ואופציונלית עמודת שם). עמודות נוספות הופכות לאסימוני הודעה.",
+    "dropzone": "גררו לכאן קובץ CSV או לחצו לעיון",
+    "readError": "קריאת הקובץ נכשלה",
+    "valid": "{{count}} תקינים",
+    "skipped": "{{count}} דולגו",
+    "thName": "שם",
+    "thPhone": "טלפון",
+    "continue": "המשך ({{count}})"
+  },
+  "compose": {
+    "title": "כתיבת ההודעה",
+    "help": "השתמשו באסימונים כמו {{example}} כדי להתאים אישית כל הודעה.",
+    "placeholder": "שלום {{name}}, …",
+    "unknownTokens": "אסימונים לא ידועים: {{tokens}}",
+    "previewFor": "תצוגה מקדימה עבור {{name}}",
+    "review": "סקירה ושליחה"
+  },
+  "send": {
+    "title": "שליחה",
+    "summary": "שולח אל {{count}} אנשי קשר עם השהיה אקראית של {{min}}–{{max}} שניות בין ההודעות.",
+    "sent": "{{count}} נשלחו",
+    "failed": "{{count}} נכשלו",
+    "skipped": "{{count}} דולגו",
+    "sendingTo": "שולח אל {{name}}…",
+    "start": "התחלת שליחה",
+    "again": "שליחה מחדש",
+    "cancel": "ביטול",
+    "results": "תוצאות ({{count}})",
+    "thName": "שם",
+    "thPhone": "טלפון",
+    "thStatus": "סטטוס",
+    "thError": "שגיאה"
+  },
+  "result": {
+    "sent": "נשלח",
+    "failed": "נכשל",
+    "skipped": "דולג"
+  },
+  "language": {
+    "label": "שפה",
+    "system": "ברירת מחדל של המערכת"
+  }
+}

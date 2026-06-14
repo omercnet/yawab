@@ -1,0 +1,49 @@
+import { expect, fixture, test } from './fixtures'
+
+// Keep assertions language-independent of the host OS by forcing English.
+test.beforeEach(async ({ page }) => {
+  await page.selectOption('.language-selector__select', 'en')
+})
+
+test('runs the full pair → upload → compose → send wizard', async ({ page }) => {
+  const card = page.locator('.card')
+
+  // Step 1: connect. The fake backend emits a QR then auto-connects.
+  await expect(card.getByRole('heading', { name: 'Connect your WhatsApp' })).toBeVisible()
+  await card.getByRole('button', { name: 'Connect', exact: true }).click()
+  await expect(page.getByText('Connected and ready to send.')).toBeVisible()
+  await card.getByRole('button', { name: 'Continue', exact: true }).click()
+
+  // Step 2: upload contacts. The fixture has 2 valid + 1 "unreachable".
+  await expect(card.getByRole('heading', { name: 'Upload contacts' })).toBeVisible()
+  await page.locator('input[type="file"]').setInputFiles(fixture('contacts.csv'))
+  await expect(card.getByText('3 valid')).toBeVisible()
+  await card.getByRole('button', { name: /^Continue \(3\)$/ }).click()
+
+  // Step 3: compose with a personalisation token; preview should render.
+  await expect(card.getByRole('heading', { name: 'Compose your message' })).toBeVisible()
+  await page.getByRole('textbox').fill('Hi {{name}}, hello from Yawn!')
+  await expect(card.getByText(/^Preview for/)).toBeVisible()
+  await card.getByRole('button', { name: 'Review & send' }).click()
+
+  // Step 4: send. Two contacts succeed, the *0000 number fails.
+  await expect(card.getByRole('heading', { name: 'Send', exact: true })).toBeVisible()
+  await card.getByRole('button', { name: 'Start sending' }).click()
+
+  await expect(card.getByText(/^Results \(3\)$/)).toBeVisible()
+  await expect(page.locator('.result--sent')).toHaveCount(2)
+  await expect(page.locator('.result--failed')).toHaveCount(1)
+})
+
+test('reports an error for a CSV with no phone column', async ({ page }) => {
+  const card = page.locator('.card')
+  await card.getByRole('button', { name: 'Connect', exact: true }).click()
+  await card.getByRole('button', { name: 'Continue', exact: true }).click()
+
+  await page.locator('input[type="file"]').setInputFiles({
+    name: 'bad.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from('name,email\nAda,ada@example.com')
+  })
+  await expect(card.getByText('0 valid')).toBeVisible()
+})

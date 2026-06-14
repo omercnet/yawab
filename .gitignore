@@ -1,0 +1,23 @@
+node_modules
+out
+dist
+coverage
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# build artifacts
+*.dmg
+*.exe
+*.blockmap
+*.zip
+
+# electron-vite / electron-builder caches
+.cache
+
+# Playwright
+playwright-report
+test-results
+.playwright
