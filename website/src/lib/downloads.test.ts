@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { releaseFixture } from './__fixtures__/latest-release'
-import { fetchLatestDownloads, RELEASES_LATEST_URL, resolveDownloads } from './downloads'
+import {
+  fetchLatestDownloads,
+  RELEASES_LATEST_URL,
+  readCachedDownloads,
+  resolveDownloads
+} from './downloads'
 
 const urlsFrom = (links: ReturnType<typeof resolveDownloads>) => [
   links.mac.arm64,
@@ -86,7 +91,7 @@ describe('fetchLatestDownloads', () => {
     expectAllFallback(await fetchLatestDownloads(badJsonFetch))
   })
 
-  it('resolves a valid response and reuses session cache', async () => {
+  it('resolves a valid response and writes the session cache', async () => {
     const fetching = vi.fn<typeof fetch>(() =>
       Promise.resolve(
         new Response(JSON.stringify(releaseFixture), {
@@ -96,18 +101,60 @@ describe('fetchLatestDownloads', () => {
       )
     )
 
-    const first = await fetchLatestDownloads(fetching)
-    const second = await fetchLatestDownloads(() => {
-      throw new Error('cache should avoid fetch')
-    })
+    const links = await fetchLatestDownloads(fetching)
 
     expect(fetching).toHaveBeenCalledOnce()
     expect(fetching).toHaveBeenCalledWith(
       'https://api.github.com/repos/omercnet/yawab/releases/latest',
       { headers: { Accept: 'application/vnd.github+json' } }
     )
-    expect(first).toEqual(second)
-    expect(second.mac.arm64).toMatch(/-arm64\.dmg$/)
-    expect(sessionStorage.getItem('yawab:downloads')).toBe(JSON.stringify(first))
+    expect(links.mac.arm64).toMatch(/-arm64\.dmg$/)
+    expect(sessionStorage.getItem('yawab:downloads')).toBe(JSON.stringify(links))
+  })
+
+  it('always revalidates even when a cache exists (no stale pinning)', async () => {
+    sessionStorage.setItem('yawab:downloads', JSON.stringify(resolveDownloads(null)))
+    const fetching = vi.fn<typeof fetch>(() =>
+      Promise.resolve(
+        new Response(JSON.stringify(releaseFixture), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        })
+      )
+    )
+
+    const links = await fetchLatestDownloads(fetching)
+
+    expect(fetching).toHaveBeenCalledOnce()
+    expect(links.mac.arm64).toMatch(/-arm64\.dmg$/)
+  })
+})
+
+describe('readCachedDownloads', () => {
+  beforeEach(() => {
+    sessionStorage.clear()
+  })
+
+  it('returns null when nothing is cached', () => {
+    expect(readCachedDownloads()).toBeNull()
+  })
+
+  it('returns cached links written by a prior fetch', async () => {
+    const fetching: typeof fetch = () =>
+      Promise.resolve(
+        new Response(JSON.stringify(releaseFixture), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        })
+      )
+    const written = await fetchLatestDownloads(fetching)
+
+    expect(readCachedDownloads()).toEqual(written)
+  })
+
+  it('returns null and clears a corrupt cache entry', () => {
+    sessionStorage.setItem('yawab:downloads', '{ not json')
+    expect(readCachedDownloads()).toBeNull()
+    expect(sessionStorage.getItem('yawab:downloads')).toBeNull()
   })
 })
