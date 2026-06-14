@@ -47,3 +47,29 @@ test('reports an error for a CSV with no phone column', async ({ page }) => {
   })
   await expect(card.getByText('0 valid')).toBeVisible()
 })
+
+test('downloads an example CSV template', async ({ page, electronApp }) => {
+  // Playwright cannot observe Electron's blob downloads, so assert on the
+  // main-process will-download event instead (and cancel the actual write).
+  await electronApp.evaluate(({ session }) => {
+    const g = globalThis as unknown as { __dl?: string | null }
+    g.__dl = null
+    session.defaultSession.once('will-download', (_event, item) => {
+      g.__dl = item.getFilename()
+      item.cancel()
+    })
+  })
+
+  const card = page.locator('.card')
+  await card.getByRole('button', { name: 'Connect', exact: true }).click()
+  await card.getByRole('button', { name: 'Continue', exact: true }).click()
+  await expect(card.getByRole('heading', { name: 'Upload contacts' })).toBeVisible()
+
+  await page.getByRole('button', { name: /Download example CSV/ }).click()
+
+  await expect
+    .poll(() =>
+      electronApp.evaluate(() => (globalThis as unknown as { __dl?: string | null }).__dl)
+    )
+    .toBe('yawab-contacts-template.csv')
+})

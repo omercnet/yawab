@@ -31,6 +31,7 @@
   "contacts": {
     "title": "Cargar contactos",
     "description": "Elige un CSV con una columna de teléfono (y, opcionalmente, una de nombre). Las columnas adicionales se convierten en tokens del mensaje.",
+    "downloadExample": "Descargar CSV de ejemplo",
     "dropzone": "Suelta un CSV aquí o haz clic para explorar",
     "readError": "No se pudo leer el archivo",
     "valid": "{{count}} válidos",

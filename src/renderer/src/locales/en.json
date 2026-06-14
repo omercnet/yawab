@@ -31,6 +31,7 @@
   "contacts": {
     "title": "Upload contacts",
     "description": "Pick a CSV with a phone column (and optionally a name column). Extra columns become message tokens.",
+    "downloadExample": "Download example CSV",
     "dropzone": "Drop a CSV here or click to browse",
     "readError": "Failed to read file",
     "valid": "{{count}} valid",

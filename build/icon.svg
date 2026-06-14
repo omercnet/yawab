@@ -1,0 +1,39 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="80" x2="940" y2="980" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#053b33" />
+      <stop offset="0.55" stop-color="#0c8f74" />
+      <stop offset="1" stop-color="#22d89c" />
+    </linearGradient>
+    <radialGradient id="sheen" cx="0.3" cy="0.2" r="0.95">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.2" />
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.05" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0fa183" />
+      <stop offset="1" stop-color="#0a6c58" />
+    </linearGradient>
+    <clipPath id="squircle">
+      <rect x="0" y="0" width="1024" height="1024" rx="232" ry="232" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#squircle)">
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#bg)" />
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#sheen)" />
+
+    <!-- main chat bubble + tail -->
+    <path d="M372 612 L334 716 L470 608 Z" fill="#ffffff" />
+    <rect x="218" y="250" width="588" height="398" rx="104" fill="#ffffff" />
+
+    <!-- broadcast trail: sending to many -->
+    <circle cx="392" cy="486" r="15" fill="#0a6c58" fill-opacity="0.32" />
+    <circle cx="358" cy="512" r="11" fill="#0a6c58" fill-opacity="0.2" />
+
+    <!-- paper plane (send) -->
+    <g transform="translate(516 432) rotate(-28) scale(13.6) translate(-12 -12)">
+      <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" fill="url(#plane)" />
+    </g>
+  </g>
+</svg>
