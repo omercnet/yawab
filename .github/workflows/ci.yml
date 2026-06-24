@@ -187,10 +187,29 @@ jobs:
             echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
           fi
 
+      - name: Require macOS notarization secrets on main
+        if: ${{ matrix.os == 'macos-latest' && github.event_name == 'push' }}
+        shell: bash
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          missing=0
+          for name in CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::$name is required for notarized macOS main artifacts"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
       - name: Package installers (no publish)
         run: ${{ matrix.build }} --publish never
         env:
-          DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder' || '' }}
+          DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder,electron-notarize*' || '' }}
           CSC_FOR_PULL_REQUEST: ${{ github.event_name == 'pull_request' && 'true' || '' }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
