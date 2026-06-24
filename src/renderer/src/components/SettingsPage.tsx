@@ -325,6 +325,12 @@ export function SettingsPage({
             checked={settings.autoUpdate}
             onChange={(v) => onUpdate({ autoUpdate: v })}
           />
+          <Toggle
+            label={t('settings.data.telemetryLabel')}
+            hint={t('settings.data.telemetryHint')}
+            checked={settings.telemetryEnabled}
+            onChange={(v) => onUpdate({ telemetryEnabled: v })}
+          />
           <div className="setting">
             <div className="setting__text">
               <span className="setting__label">{t('settings.data.folderLabel')}</span>
