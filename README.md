@@ -128,7 +128,9 @@ data, and WhatsApp session details are never included. Release builds use
 
 To enable macOS code signing / notarization, set the `CSC_LINK`,
 `CSC_KEY_PASSWORD`, `APPLE_API_KEY`, `APPLE_API_KEY_ID`, and
-`APPLE_API_ISSUER` repository secrets (see the macOS troubleshooting section below).
+`APPLE_API_ISSUER`, and `APPLE_TEAM_ID` repository secrets (see the macOS troubleshooting section below).
+The workflows also accept `MAC_CSC_LINK` and `MAC_CSC_KEY_PASSWORD`, matching
+electron-builder's GitHub Actions examples.
 
 On launch, production builds check GitHub Releases for a newer version via
 [`electron-updater`](https://www.electron.build/auto-update) and notify the user
@@ -152,6 +154,7 @@ a normal double-click:
 | `APPLE_API_KEY` | base64 of your App Store Connect API key (`.p8`) |
 | `APPLE_API_KEY_ID` | App Store Connect API key ID |
 | `APPLE_API_ISSUER` | App Store Connect issuer ID |
+| `APPLE_TEAM_ID` | your Apple Developer Team ID |
 
 This needs an **Apple Developer Program** membership ($99/yr); there is no free
 way to remove the warning entirely.
