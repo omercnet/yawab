@@ -71,6 +71,62 @@ describe('telemetry privacy helpers', () => {
 
     expect(JSON.stringify(sanitized)).not.toContain(SENTINELS.sessionToken)
   })
+
+  it('keeps non-identifying event metadata while sanitizing stack frame fields', () => {
+    const sanitized = sanitizeSentryEvent({
+      type: undefined,
+      environment: `production ${SENTINELS.sessionToken}`,
+      platform: `javascript ${SENTINELS.phone}`,
+      release: `yawab@1.1.0 ${SENTINELS.sessionToken}`,
+      sdk: { name: 'sentry.javascript.electron', version: '7.13.0' },
+      exception: {
+        values: [
+          {
+            type: `TypeError ${SENTINELS.phone}`,
+            stacktrace: {
+              frames: [
+                {
+                  module: `renderer.${SENTINELS.sessionToken}`,
+                  platform: `browser ${SENTINELS.phone}`,
+                  lineno: 7,
+                  colno: 11,
+                  in_app: true,
+                  instruction_addr: `addr-${SENTINELS.sessionToken}`,
+                  addr_mode: `mode-${SENTINELS.phone}`,
+                  debug_id: 'debug-symbol-id'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    })
+
+    expect(sanitized.environment).toBe('production [redacted]')
+    expect(sanitized.platform).toBe('javascript [redacted]')
+    expect(sanitized.release).toBe('yawab@1.1.0 [redacted]')
+    expect(sanitized.sdk?.name).toBe('sentry.javascript.electron')
+    expect(sanitized.exception?.values?.[0]?.type).toBe('TypeError [redacted]')
+
+    const frame = sanitized.exception?.values?.[0]?.stacktrace?.frames?.[0]
+    expect(frame?.module).toBe('renderer.[redacted]')
+    expect(frame?.platform).toBe('browser [redacted]')
+    expect(frame?.lineno).toBe(7)
+    expect(frame?.colno).toBe(11)
+    expect(frame?.in_app).toBe(true)
+    expect(frame?.instruction_addr).toBe('addr-[redacted]')
+    expect(frame?.addr_mode).toBe('mode-[redacted]')
+    expect(frame?.debug_id).toBe('debug-symbol-id')
+  })
+
+  it('redacts sensitive safe tag keys', () => {
+    const sanitized = sanitizeSentryEvent(
+      { type: undefined },
+      { safeTags: { [SENTINELS.sessionToken]: false } }
+    )
+
+    expect(sanitized.tags).toEqual({ '[redacted]': false })
+  })
 })
 
 function makeSensitiveEvent(): ErrorEvent {
