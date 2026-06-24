@@ -157,6 +157,8 @@
       "description": "App updates and where your data lives.",
       "autoUpdateLabel": "Automatic updates",
       "autoUpdateHint": "Check for and install updates on launch.",
+      "telemetryLabel": "Error reporting",
+      "telemetryHint": "Send anonymous crash reports and error diagnostics only. No message text, contacts, phone numbers, or WhatsApp session details are ever included. Disable any time here.",
       "folderLabel": "Data folder",
       "openFolder": "Open",
       "resetLabel": "Reset settings",

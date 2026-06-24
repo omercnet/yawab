@@ -34,6 +34,8 @@ describe('coerceSettings', () => {
     expect(coerceSettings({ reduceMotion: true }).reduceMotion).toBe(true)
     expect(coerceSettings({ reduceMotion: 'yes' }).reduceMotion).toBe(false)
     expect(coerceSettings({ autoUpdate: false }).autoUpdate).toBe(false)
+    expect(coerceSettings({ telemetryEnabled: false }).telemetryEnabled).toBe(false)
+    expect(coerceSettings({ telemetryEnabled: 'nope' }).telemetryEnabled).toBe(true)
   })
 
   it('clamps the minimum delay up to the safety floor', () => {

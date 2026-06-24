@@ -51,3 +51,36 @@ test('persists the selected theme across restarts', async () => {
   await expect(secondPage.locator('html')).toHaveAttribute('data-theme', 'nord')
   await second.close()
 })
+
+test('telemetry toggle is checked by default', async ({ page }) => {
+  await page.getByRole('button', { name: 'Settings' }).click()
+  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+
+  const telemetry = page.getByLabel('Error reporting')
+  await expect(telemetry).toBeChecked()
+})
+
+test('telemetry disabled state persists across restarts', async () => {
+  const userDataDir = tempUserDataDir()
+
+  const first = await launchAppAt(userDataDir)
+  const firstPage = await first.firstWindow()
+  await firstPage.waitForLoadState('domcontentloaded')
+  await firstPage.selectOption('.language-selector__select', 'en')
+  await firstPage.getByRole('button', { name: 'Settings' }).click()
+
+  const telemetry = firstPage.getByLabel('Error reporting')
+  await expect(telemetry).toBeChecked()
+  await firstPage.getByText('Error reporting', { exact: true }).click()
+  await expect(telemetry).not.toBeChecked()
+  await first.close()
+
+  // Relaunch: disabled state must survive.
+  const second = await launchAppAt(userDataDir)
+  const secondPage = await second.firstWindow()
+  await secondPage.waitForLoadState('domcontentloaded')
+  await secondPage.selectOption('.language-selector__select', 'en')
+  await secondPage.getByRole('button', { name: 'Settings' }).click()
+  await expect(secondPage.getByLabel('Error reporting')).not.toBeChecked()
+  await second.close()
+})

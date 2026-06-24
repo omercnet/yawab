@@ -157,6 +157,8 @@
       "description": "Actualizaciones de la app y dónde se guardan tus datos.",
       "autoUpdateLabel": "Actualizaciones automáticas",
       "autoUpdateHint": "Buscar e instalar actualizaciones al iniciar.",
+      "telemetryLabel": "Informes de errores",
+      "telemetryHint": "Envía solo informes de fallos y diagnósticos de errores anónimos. Nunca se incluyen textos de mensajes, contactos, números de teléfono ni detalles de la sesión de WhatsApp. Puedes desactivarlo aquí en cualquier momento.",
       "folderLabel": "Carpeta de datos",
       "openFolder": "Abrir",
       "resetLabel": "Restablecer ajustes",
