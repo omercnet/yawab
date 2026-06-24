@@ -16,7 +16,7 @@ import makeWASocket, {
   type WASocket
 } from '@whiskeysockets/baileys'
 import pino from 'pino'
-import QRCode from 'qrcode'
+import { renderQrDataUrl } from './qr'
 
 export interface WhatsAppEvents {
   status: (status: ConnectionStatus) => void
@@ -129,9 +129,10 @@ export class WhatsAppService extends EventEmitter implements WhatsAppController 
     if (qr) {
       this.setStatus('qr')
       try {
-        const dataUrl = await QRCode.toDataURL(qr, { margin: 1, width: 320 })
+        const dataUrl = renderQrDataUrl(qr)
         this.fire('qr', dataUrl)
-      } catch (err) {
+      } catch (error) {
+        const err = error instanceof Error ? error : new Error(String(error))
         logger.error({ err }, 'failed to render QR')
       }
     }
