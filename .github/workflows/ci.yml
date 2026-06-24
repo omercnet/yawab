@@ -3,6 +3,8 @@ name: CI
 on:
   pull_request:
     branches: [main, master]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -167,9 +169,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # Builds the real installers (dmg / nsis / AppImage + deb) without
-      # publishing, so every PR proves the release packaging works. We mirror the
-      # release's signing setup (Configure step + CSC_FOR_PULL_REQUEST to force the
-      # macOS code-signing path) so this job catches release-only signing failures.
+      # publishing, so PRs and main merges prove the release packaging works. We
+      # mirror the release's signing setup; PRs also set CSC_FOR_PULL_REQUEST so
+      # internal PR builds exercise the macOS code-signing path when secrets exist.
       - name: Configure macOS code signing
         shell: bash
         env:
@@ -189,7 +191,10 @@ jobs:
         run: ${{ matrix.build }} --publish never
         env:
           DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder' || '' }}
-          CSC_FOR_PULL_REQUEST: 'true'
+          CSC_FOR_PULL_REQUEST: ${{ github.event_name == 'pull_request' && 'true' || '' }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Upload installers
         if: always()
@@ -229,7 +234,7 @@ jobs:
               marker,
               '### 📦 Build artifacts',
               '',
-              `Unsigned installers built from \`${context.sha.slice(0, 7)}\` for manual testing before merge.`,
+              `Installers built from \`${context.sha.slice(0, 7)}\` for manual testing before merge.`,
               'Downloading requires being signed in to GitHub. Each link is a zip of that platform installers:',
               '',
               list,
