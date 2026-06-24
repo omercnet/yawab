@@ -9,7 +9,7 @@ import { isSupportedLanguage, type LanguagePreference } from './locales'
  */
 
 /** Bumped whenever the persisted shape changes; drives migration in coercion. */
-export const SCHEMA_VERSION = 2
+export const SCHEMA_VERSION = 3
 
 /**
  * Hard lower bound on the minimum inter-message delay. We never allow 0: a
@@ -68,6 +68,7 @@ export interface AppSettings {
   theme: string
   /** Disable non-essential animations/transitions. */
   reduceMotion: boolean
+  telemetryEnabled: boolean
   pacing: PacingSettings
   csv: CsvSettings
   message: MessageSettings
@@ -81,6 +82,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   language: 'system',
   theme: 'system',
   reduceMotion: false,
+  telemetryEnabled: true,
   pacing: {
     minDelayMs: 3000,
     maxDelayMs: 8000,
@@ -171,7 +173,7 @@ function coercePacing(raw: unknown): PacingSettings {
 /**
  * Coerce arbitrary persisted JSON into a complete, valid {@link AppSettings},
  * filling defaults and clamping out-of-range values. Tolerates the legacy
- * `{ language }`-only shape (schemaVersion < 2) by merging onto the defaults.
+ * `{ language }`-only shape (schemaVersion < 3) by merging onto the defaults.
  */
 export function coerceSettings(raw: unknown): AppSettings {
   const r = (raw ?? {}) as Partial<AppSettings>
@@ -183,6 +185,7 @@ export function coerceSettings(raw: unknown): AppSettings {
     language: coerceLanguage(r.language),
     theme: typeof r.theme === 'string' ? r.theme : DEFAULT_SETTINGS.theme,
     reduceMotion: coerceBool(r.reduceMotion, DEFAULT_SETTINGS.reduceMotion),
+    telemetryEnabled: coerceBool(r.telemetryEnabled, DEFAULT_SETTINGS.telemetryEnabled),
     pacing: coercePacing(r.pacing),
     csv: {
       defaultCountryCode:
