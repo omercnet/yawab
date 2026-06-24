@@ -72,6 +72,20 @@ jobs:
             echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
           fi
 
+      - name: Validate Sentry EU DSN
+        shell: bash
+        env:
+          YAWAB_SENTRY_DSN: ${{ secrets.YAWAB_SENTRY_DSN }}
+        run: |
+          if [[ -z "$YAWAB_SENTRY_DSN" ]]; then
+            echo "YAWAB_SENTRY_DSN is required for official release telemetry." >&2
+            exit 1
+          fi
+          if [[ "$YAWAB_SENTRY_DSN" != *".ingest.de.sentry.io/"* ]]; then
+            echo "YAWAB_SENTRY_DSN must use Sentry EU data residency (.ingest.de.sentry.io)." >&2
+            exit 1
+          fi
+
       - name: Build & publish to the GitHub release
         run: ${{ matrix.build }} --publish always
         env:
@@ -79,3 +93,6 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          YAWAB_SENTRY_DSN: ${{ secrets.YAWAB_SENTRY_DSN }}
+          YAWAB_SENTRY_ENVIRONMENT: production
+          YAWAB_SENTRY_RELEASE: ${{ needs.release-please.outputs.tag_name }}
