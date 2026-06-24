@@ -1,4 +1,5 @@
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { parseContactsCsv } from '@shared/csv'
 import { IpcChannels, IpcEvents, type StartSendPayload } from '@shared/ipc'
@@ -7,11 +8,14 @@ import type { SettingsPatch } from '@shared/settings'
 import { renderTemplate } from '@shared/template'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { readSettings, writeSettings } from './settings'
+import { initTelemetry, setTelemetryEnabled } from './telemetry'
 import { type WhatsAppController, WhatsAppService } from './whatsapp'
 import { FakeWhatsAppService } from './whatsapp.fake'
 
 let mainWindow: BrowserWindow | null = null
 let whatsapp: WhatsAppController | null = null
+
+const mainDir = dirname(fileURLToPath(import.meta.url))
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -23,7 +27,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     title: 'Yawab',
     webPreferences: {
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: join(mainDir, '../preload/index.mjs'),
       sandbox: false,
       contextIsolation: true,
       nodeIntegration: false
@@ -40,7 +44,7 @@ function createWindow(): void {
   if (is.dev && process.env.ELECTRON_RENDERER_URL) {
     mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL)
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(mainDir, '../renderer/index.html'))
   }
 }
 
@@ -111,6 +115,7 @@ function registerIpc(): void {
   ipcMain.handle(IpcChannels.updateSettings, (_event, patch: SettingsPatch) => {
     const next = writeSettings(patch)
     whatsapp?.configure(next.connection)
+    setTelemetryEnabled(next.telemetryEnabled)
     return next
   })
 
@@ -127,6 +132,7 @@ function registerIpc(): void {
 
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.yawab.app')
+  initTelemetry(readSettings().telemetryEnabled)
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
