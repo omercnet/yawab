@@ -52,17 +52,30 @@ function createWindow(): void {
 
 function registerWindowShortcuts(window: BrowserWindow): void {
   window.webContents.on('before-input-event', (event, input) => {
-    const key = input.key.toLowerCase()
-    if (isDevelopment && key === 'f12') {
+    if (input.type !== 'keyDown') return
+
+    if (isDevelopment && input.code === 'F12') {
       window.webContents.toggleDevTools()
       event.preventDefault()
       return
     }
 
-    const reloadModifier = process.platform === 'darwin' ? input.meta : input.control
-    const isReloadShortcut = (reloadModifier && key === 'r') || key === 'f5'
-    if (!isDevelopment && isReloadShortcut) event.preventDefault()
+    const commandModifier = input.control || input.meta
+    const isReloadShortcut = commandModifier && input.code === 'KeyR'
+    const isDevToolsShortcut =
+      input.code === 'KeyI' &&
+      ((input.alt && input.meta) || (input.control && input.shift))
+    const isZoomOutShortcut = commandModifier && input.code === 'Minus'
+    const isZoomInShortcut = commandModifier && input.shift && input.code === 'Equal'
+    const isBlockedProductionShortcut =
+      isReloadShortcut || isDevToolsShortcut || isZoomOutShortcut || isZoomInShortcut
+    if (!isDevelopment && isBlockedProductionShortcut) event.preventDefault()
   })
+}
+
+function setAppUserModelId(id: string): void {
+  if (process.platform === 'win32')
+    app.setAppUserModelId(isDevelopment ? process.execPath : id)
 }
 
 function send(channel: string, payload: unknown): void {
@@ -148,7 +161,7 @@ function registerIpc(): void {
 }
 
 app.whenReady().then(() => {
-  app.setAppUserModelId('com.yawab.app')
+  setAppUserModelId('com.yawab.app')
   initTelemetry(readSettings().telemetryEnabled)
 
   registerIpc()
