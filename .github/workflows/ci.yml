@@ -144,7 +144,18 @@ jobs:
 
   package:
     name: Package installers (${{ matrix.os }})
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ${{ matrix.os }}
+    env:
+      CSC_LINK: ${{ secrets.MAC_CSC_LINK || secrets.CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD || secrets.CSC_KEY_PASSWORD }}
+      APPLE_API_KEY: ${{ secrets.APPLE_API_KEY != '' && format('AuthKey_{0}.p8', secrets.APPLE_API_KEY_ID) || '' }}
+      APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY }}
+      APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+      APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder,electron-notarize*' || '' }}
+      CSC_FOR_PULL_REQUEST: ${{ github.event_name == 'pull_request' && 'true' || '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -168,33 +179,39 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Builds the real installers (dmg / nsis / AppImage + deb) without
-      # publishing, so PRs and main merges prove the release packaging works. We
-      # mirror the release's signing setup; PRs also set CSC_FOR_PULL_REQUEST so
-      # internal PR builds exercise the macOS code-signing path when secrets exist.
-      - name: Configure macOS code signing
+      - name: Write App Store Connect API key
+        if: ${{ matrix.os == 'macos-latest' && env.APPLE_API_KEY_CONTENT != '' }}
         shell: bash
-        env:
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
         run: |
-          if [ -n "$CSC_LINK" ]; then
-            {
-              echo "CSC_LINK=$CSC_LINK"
-              echo "CSC_KEY_PASSWORD=$CSC_KEY_PASSWORD"
-            } >> "$GITHUB_ENV"
-          else
-            echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
-          fi
+          printf '%s' "$APPLE_API_KEY_CONTENT" | base64 --decode > "$APPLE_API_KEY"
+          chmod 600 "$APPLE_API_KEY"
+
+      - name: Require macOS notarization secrets
+        if: ${{ matrix.os == 'macos-latest' }}
+        shell: bash
+        run: test -n "$CSC_LINK" && test -n "$CSC_KEY_PASSWORD" && test -n "$APPLE_API_KEY" && test -n "$APPLE_API_KEY_ID" && test -n "$APPLE_API_ISSUER" && test -n "$APPLE_TEAM_ID"
 
       - name: Package installers (no publish)
         run: ${{ matrix.build }} --publish never
-        env:
-          DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder' || '' }}
-          CSC_FOR_PULL_REQUEST: ${{ github.event_name == 'pull_request' && 'true' || '' }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Verify macOS notarization
+        if: ${{ matrix.os == 'macos-latest' }}
+        shell: bash
+        run: |
+          found=0
+          for app_path in dist/mac*/Yawab.app; do
+            if [ ! -d "$app_path" ]; then
+              continue
+            fi
+            found=1
+            spctl --assess --verbose --type exec "$app_path"
+            xcrun stapler validate "$app_path"
+            codesign --verify --deep --strict --verbose=2 "$app_path"
+          done
+          if [ "$found" -eq 0 ]; then
+            echo "::error::No macOS app bundle found to verify"
+            exit 1
+          fi
 
       - name: Upload installers
         if: always()
