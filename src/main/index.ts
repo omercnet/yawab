@@ -1,6 +1,5 @@
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { parseContactsCsv } from '@shared/csv'
 import { IpcChannels, IpcEvents, type StartSendPayload } from '@shared/ipc'
 import { type LanguagePreference, resolvePreference } from '@shared/locales'
@@ -16,6 +15,7 @@ let mainWindow: BrowserWindow | null = null
 let whatsapp: WhatsAppController | null = null
 
 const mainDir = dirname(fileURLToPath(import.meta.url))
+const isDevelopment = !app.isPackaged
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -41,11 +41,28 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  if (is.dev && process.env.ELECTRON_RENDERER_URL) {
+  registerWindowShortcuts(mainWindow)
+
+  if (isDevelopment && process.env.ELECTRON_RENDERER_URL) {
     mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL)
   } else {
     mainWindow.loadFile(join(mainDir, '../renderer/index.html'))
   }
+}
+
+function registerWindowShortcuts(window: BrowserWindow): void {
+  window.webContents.on('before-input-event', (event, input) => {
+    const key = input.key.toLowerCase()
+    if (isDevelopment && key === 'f12') {
+      window.webContents.toggleDevTools()
+      event.preventDefault()
+      return
+    }
+
+    const reloadModifier = process.platform === 'darwin' ? input.meta : input.control
+    const isReloadShortcut = (reloadModifier && key === 'r') || key === 'f5'
+    if (!isDevelopment && isReloadShortcut) event.preventDefault()
+  })
 }
 
 function send(channel: string, payload: unknown): void {
@@ -131,12 +148,8 @@ function registerIpc(): void {
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.yawab.app')
+  app.setAppUserModelId('com.yawab.app')
   initTelemetry(readSettings().telemetryEnabled)
-
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
 
   registerIpc()
   createWindow()
@@ -157,7 +170,7 @@ app.on('window-all-closed', () => {
  * offline, or no published release yet) are non-fatal.
  */
 async function checkForUpdates(): Promise<void> {
-  if (is.dev || process.env.YAWAB_FAKE_WA) return
+  if (isDevelopment || process.env.YAWAB_FAKE_WA) return
   if (!readSettings().autoUpdate) return
   try {
     const { autoUpdater } = await import('electron-updater')
