@@ -72,33 +72,43 @@ jobs:
             echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
           fi
 
-      - name: Require macOS notarization secrets
+      - name: Configure App Store Connect API key
         if: ${{ matrix.os == 'macos-latest' }}
         shell: bash
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
         run: |
           missing=0
-          for name in CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID; do
+          for name in CSC_LINK CSC_KEY_PASSWORD APPLE_API_KEY APPLE_API_KEY_ID APPLE_API_ISSUER; do
             if [ -z "${!name}" ]; then
               echo "::error::$name is required for signed and notarized macOS releases"
               missing=1
             fi
           done
-          exit "$missing"
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+          api_key_path="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY_ID}.p8"
+          if ! printf '%s' "$APPLE_API_KEY" | base64 --decode > "$api_key_path" 2>/dev/null; then
+            printf '%s' "$APPLE_API_KEY" | base64 -D > "$api_key_path"
+          fi
+          chmod 600 "$api_key_path"
+          {
+            echo "APPLE_API_KEY=$api_key_path"
+            echo "APPLE_API_KEY_ID=$APPLE_API_KEY_ID"
+            echo "APPLE_API_ISSUER=$APPLE_API_ISSUER"
+          } >> "$GITHUB_ENV"
 
       - name: Build & publish to the GitHub release
         run: ${{ matrix.build }} --publish always
         env:
           DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder,electron-notarize*' || '' }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           YAWAB_SENTRY_DSN: ${{ secrets.YAWAB_SENTRY_DSN }}
           YAWAB_SENTRY_ENVIRONMENT: production
           YAWAB_SENTRY_RELEASE: ${{ needs.release-please.outputs.tag_name }}

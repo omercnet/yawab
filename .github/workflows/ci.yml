@@ -187,33 +187,52 @@ jobs:
             echo "CSC_IDENTITY_AUTO_DISCOVERY=false" >> "$GITHUB_ENV"
           fi
 
-      - name: Require macOS notarization secrets on main
-        if: ${{ matrix.os == 'macos-latest' && github.event_name == 'push' }}
+      - name: Configure App Store Connect API key
+        if: ${{ matrix.os == 'macos-latest' }}
         shell: bash
         env:
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          REQUIRE_NOTARIZATION: ${{ github.event_name == 'push' && 'true' || '' }}
         run: |
           missing=0
-          for name in CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID; do
+          for name in CSC_LINK CSC_KEY_PASSWORD APPLE_API_KEY APPLE_API_KEY_ID APPLE_API_ISSUER; do
             if [ -z "${!name}" ]; then
-              echo "::error::$name is required for notarized macOS main artifacts"
+              if [ "$REQUIRE_NOTARIZATION" = "true" ]; then
+                echo "::error::$name is required for notarized macOS main artifacts"
+              else
+                echo "::warning::$name unavailable; macOS PR artifact will not be notarized"
+              fi
               missing=1
             fi
           done
-          exit "$missing"
+          if [ "$missing" -ne 0 ]; then
+            if [ "$REQUIRE_NOTARIZATION" = "true" ]; then
+              exit 1
+            fi
+            echo "Notarization secrets unavailable; skipping notarization for this PR build."
+            exit 0
+          fi
+
+          api_key_path="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY_ID}.p8"
+          if ! printf '%s' "$APPLE_API_KEY" | base64 --decode > "$api_key_path" 2>/dev/null; then
+            printf '%s' "$APPLE_API_KEY" | base64 -D > "$api_key_path"
+          fi
+          chmod 600 "$api_key_path"
+          {
+            echo "APPLE_API_KEY=$api_key_path"
+            echo "APPLE_API_KEY_ID=$APPLE_API_KEY_ID"
+            echo "APPLE_API_ISSUER=$APPLE_API_ISSUER"
+          } >> "$GITHUB_ENV"
 
       - name: Package installers (no publish)
         run: ${{ matrix.build }} --publish never
         env:
           DEBUG: ${{ matrix.os == 'macos-latest' && 'electron-builder,electron-notarize*' || '' }}
           CSC_FOR_PULL_REQUEST: ${{ github.event_name == 'pull_request' && 'true' || '' }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Upload installers
         if: always()
