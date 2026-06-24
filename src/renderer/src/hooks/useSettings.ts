@@ -1,5 +1,6 @@
 import { type AppSettings, DEFAULT_SETTINGS, type SettingsPatch } from '@shared/settings'
 import { useCallback, useEffect, useState } from 'react'
+import { setTelemetryEnabled } from '../telemetry'
 import { applyReduceMotion, applyThemePreference } from '../theme'
 
 export interface SettingsState {
@@ -25,6 +26,7 @@ export function useSettings(): SettingsState {
       setLoaded(true)
       applyThemePreference(next.theme)
       applyReduceMotion(next.reduceMotion)
+      setTelemetryEnabled(next.telemetryEnabled)
     })
     return () => {
       active = false
@@ -45,6 +47,7 @@ export function useSettings(): SettingsState {
   const update = useCallback(async (patch: SettingsPatch) => {
     const next = await window.api.updateSettings(patch)
     setSettings(next)
+    setTelemetryEnabled(next.telemetryEnabled)
     if (patch.theme !== undefined) applyThemePreference(next.theme)
     if (patch.reduceMotion !== undefined) applyReduceMotion(next.reduceMotion)
   }, [])
