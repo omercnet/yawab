@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/omercnet/yawab/compare/v1.1.0...v1.2.0) (2026-06-24)
+
+
+### Features
+
+* add privacy-friendly telemetry ([#26](https://github.com/omercnet/yawab/issues/26)) ([38507fc](https://github.com/omercnet/yawab/commit/38507fc0a7d6c923d8ff8958927909bd73424ad9))
+
+
+### Bug Fixes
+
+* **deps:** remove abandoned dependency usage ([#28](https://github.com/omercnet/yawab/issues/28)) ([bd23b8e](https://github.com/omercnet/yawab/commit/bd23b8e2f5301b6fd3b780805cb6b20605f331e1))
+* run signed package sanity on main ([#29](https://github.com/omercnet/yawab/issues/29)) ([8192138](https://github.com/omercnet/yawab/commit/8192138a3a01db7f9ee0578d62356e410268ffb8))
+
 ## [1.1.0](https://github.com/omercnet/yawab/compare/v1.0.3...v1.1.0) (2026-06-14)
 
 
