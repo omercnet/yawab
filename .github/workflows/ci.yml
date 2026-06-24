@@ -185,8 +185,8 @@ jobs:
           printf '%s' "$APPLE_API_KEY_CONTENT" | base64 --decode > "$APPLE_API_KEY"
           chmod 600 "$APPLE_API_KEY"
 
-      - name: Require macOS notarization secrets on main
-        if: ${{ matrix.os == 'macos-latest' && github.event_name == 'push' }}
+      - name: Require macOS notarization secrets
+        if: ${{ matrix.os == 'macos-latest' }}
         shell: bash
         run: test -n "$CSC_LINK" && test -n "$CSC_KEY_PASSWORD" && test -n "$APPLE_API_KEY" && test -n "$APPLE_API_KEY_ID" && test -n "$APPLE_API_ISSUER" && test -n "$APPLE_TEAM_ID"
 
@@ -194,7 +194,7 @@ jobs:
         run: ${{ matrix.build }} --publish never
 
       - name: Verify macOS notarization
-        if: ${{ matrix.os == 'macos-latest' && (github.event_name == 'push' || env.APPLE_API_KEY != '') }}
+        if: ${{ matrix.os == 'macos-latest' }}
         shell: bash
         run: |
           found=0
