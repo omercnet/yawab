@@ -38,7 +38,9 @@
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,html}": "biome check --write --no-errors-on-unmatched"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@sentry/electron": "^7.13.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.5.0",
     "@commitlint/cli": "^21.0.2",

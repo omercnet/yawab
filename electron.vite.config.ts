@@ -5,19 +5,34 @@ import { defineConfig } from 'electron-vite'
 
 // Only `electron` and Node built-ins stay external. `electron` is provided by
 // the runtime (bundling its npm package pulls in an install shim whose default
-// export is the binary path string, which crashes the app). EVERYTHING else is
-// bundled into the main/preload output, so the packaged app ships with zero
-// production dependencies. That removes electron-builder's pnpm node-modules
-// collector from the packaging path entirely — it was non-deterministically
-// failing on macOS with `⨯ <projectDir> not a file`.
+// export is the binary path string, which crashes the app). Other package
+// dependencies stay bundled into the main/preload output unless listed here,
+// which keeps electron-builder's pnpm node-modules collector off that path.
 const externals: (string | RegExp)[] = [
   'electron',
   /^electron\/.+/,
   ...builtinModules.flatMap((m) => [m, `node:${m}`])
 ]
 
+const sentryDsn = process.env.YAWAB_SENTRY_DSN ?? ''
+
+if (sentryDsn.length > 0 && !sentryDsn.includes('.ingest.de.sentry.io/')) {
+  throw new Error(
+    'YAWAB_SENTRY_DSN must be a Sentry EU DSN ending in .ingest.de.sentry.io'
+  )
+}
+
+const sentryBuildConstants = {
+  __YAWAB_SENTRY_DSN__: JSON.stringify(sentryDsn),
+  __YAWAB_SENTRY_ENVIRONMENT__: JSON.stringify(
+    process.env.YAWAB_SENTRY_ENVIRONMENT ?? ''
+  ),
+  __YAWAB_SENTRY_RELEASE__: JSON.stringify(process.env.YAWAB_SENTRY_RELEASE ?? '')
+} as const
+
 export default defineConfig({
   main: {
+    define: sentryBuildConstants,
     resolve: {
       alias: {
         '@shared': resolve('src/shared')
@@ -31,6 +46,7 @@ export default defineConfig({
     }
   },
   preload: {
+    define: sentryBuildConstants,
     resolve: {
       alias: {
         '@shared': resolve('src/shared')
@@ -48,6 +64,7 @@ export default defineConfig({
   },
   renderer: {
     root: 'src/renderer',
+    define: sentryBuildConstants,
     resolve: {
       alias: {
         '@shared': resolve('src/shared'),
