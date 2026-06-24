@@ -119,12 +119,11 @@ bumps the version, tags it, and the publish job in `release-please.yml` builds a
 uploads **macOS (`.dmg`), Windows (NSIS), and Linux (AppImage + `.deb`)** artifacts
 to the GitHub Release across a macOS/Windows/Linux runner matrix.
 
-Production builds can send privacy-safe error reports to Sentry EU. Error
-reporting is enabled by default and can be disabled any time in **Settings →
-Updates & data → Error reporting**. Reports are limited to sanitized crash/error
-diagnostics; message text, contacts, phone numbers, CSV data, and WhatsApp
-session details are never included. Official release builds require the
-`YAWAB_SENTRY_DSN` secret to be a Sentry EU DSN (`.ingest.de.sentry.io`) and use
+Production builds can send privacy-friendly error reports when `YAWAB_SENTRY_DSN`
+is configured. Error reporting is enabled by default and can be disabled any time
+in **Settings → Updates & data → Error reporting**. Reports are limited to
+sanitized crash/error diagnostics; message text, contacts, phone numbers, CSV
+data, and WhatsApp session details are never included. Release builds use
 `YAWAB_SENTRY_RELEASE` from the release tag.
 
 To enable macOS code signing / notarization, set the `CSC_LINK`,

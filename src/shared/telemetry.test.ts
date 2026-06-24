@@ -30,13 +30,13 @@ describe('telemetry privacy helpers', () => {
 
   it('creates privacy options with breadcrumb and event sanitizers', () => {
     const options = createPrivacyTelemetryOptions({
-      dsn: ' https://public@o450000.ingest.de.sentry.io/1 ',
+      dsn: ' https://public@example.ingest.sentry.io/1 ',
       environment: 'production',
       release: 'yawab@1.1.0',
       safeTags: { component: 'shared-telemetry' }
     })
 
-    expect(options.dsn).toBe('https://public@o450000.ingest.de.sentry.io/1')
+    expect(options.dsn).toBe('https://public@example.ingest.sentry.io/1')
     expect(options.environment).toBe('production')
     expect(options.release).toBe('yawab@1.1.0')
     expect(options.sendDefaultPii).toBe(false)

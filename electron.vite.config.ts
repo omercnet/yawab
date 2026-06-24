@@ -14,16 +14,8 @@ const externals: (string | RegExp)[] = [
   ...builtinModules.flatMap((m) => [m, `node:${m}`])
 ]
 
-const sentryDsn = process.env.YAWAB_SENTRY_DSN ?? ''
-
-if (sentryDsn.length > 0 && !sentryDsn.includes('.ingest.de.sentry.io/')) {
-  throw new Error(
-    'YAWAB_SENTRY_DSN must be a Sentry EU DSN ending in .ingest.de.sentry.io'
-  )
-}
-
 const sentryBuildConstants = {
-  __YAWAB_SENTRY_DSN__: JSON.stringify(sentryDsn),
+  __YAWAB_SENTRY_DSN__: JSON.stringify(process.env.YAWAB_SENTRY_DSN ?? ''),
   __YAWAB_SENTRY_ENVIRONMENT__: JSON.stringify(
     process.env.YAWAB_SENTRY_ENVIRONMENT ?? ''
   ),
